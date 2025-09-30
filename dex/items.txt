@@ -1,0 +1,537 @@
+ability shield
+abomasite
+absolite
+absorb bulb
+adamant crystal
+adamant orb
+adrenaline orb
+aerodactylite
+aggronite
+aguav berry
+air balloon
+alakazite
+aloraichium z
+altarianite
+ampharosite
+apicot berry
+armor fossil
+aspear berry
+assault vest
+audinite
+auspicious armor
+babiri berry
+banettite
+beast ball
+beedrillite
+belue berry
+berry juice
+berry sweet
+big nugget
+big root
+binding band
+black belt
+black glasses
+black sludge
+blastoisinite
+blazikenite
+blue orb
+bluk berry
+blunder policy
+booster energy
+bottle cap
+bright powder
+bug gem
+bug memory
+buginium z
+burn drive
+cameruptite
+cell battery
+charcoal
+charizardite x
+charizardite y
+charti berry
+cheri berry
+cherish ball
+chesto berry
+chilan berry
+chill drive
+chipped pot
+choice band
+choice scarf
+choice specs
+chople berry
+claw fossil
+clear amulet
+clover sweet
+coba berry
+colbur berry
+cornerstone mask
+cornn berry
+cover fossil
+covert cloak
+cracked pot
+custap berry
+damp rock
+dark gem
+dark memory
+darkinium z
+dawn stone
+decidium z
+deep sea scale
+deep sea tooth
+destiny knot
+diancite
+dive ball
+dome fossil
+douse drive
+draco plate
+dragon fang
+dragon gem
+dragon memory
+dragon scale
+dragonium z
+dread plate
+dream ball
+dubious disc
+durin berry
+dusk ball
+dusk stone
+earth plate
+eevium z
+eject button
+eject pack
+electirizer
+electric gem
+electric memory
+electric seed
+electrium z
+enigma berry
+eviolite
+expert belt
+fairium z
+fairy feather
+fairy gem
+fairy memory
+fast ball
+fighting gem
+fighting memory
+fightinium z
+figy berry
+fire gem
+fire memory
+fire stone
+firium z
+fist plate
+flame orb
+flame plate
+float stone
+flower sweet
+flying gem
+flying memory
+flyinium z
+focus band
+focus sash
+fossilized bird
+fossilized dino
+fossilized drake
+fossilized fish
+friend ball
+full incense
+galarica cuff
+galarica wreath
+galladite
+ganlon berry
+garchompite
+gardevoirite
+gengarite
+ghost gem
+ghost memory
+ghostium z
+glalitite
+gold bottle cap
+grass gem
+grass memory
+grassium z
+grassy seed
+great ball
+grepa berry
+grip claw
+griseous core
+griseous orb
+ground gem
+ground memory
+groundium z
+gyaradosite
+haban berry
+hard stone
+heal ball
+hearthflame mask
+heat rock
+heavy ball
+heavy-duty boots
+helix fossil
+heracronite
+hondew berry
+houndoominite
+iapapa berry
+ice gem
+ice memory
+ice stone
+icicle plate
+icium z
+icy rock
+incinium z
+insect plate
+iron ball
+iron plate
+jaboca berry
+jaw fossil
+kasib berry
+kebia berry
+kee berry
+kelpsy berry
+kangaskhanite
+king's rock
+kommonium z
+lagging tail
+lansat berry
+latiasite
+latiosite
+lax incense
+leaf stone
+leek
+leftovers
+leppa berry
+level ball
+liechi berry
+life orb
+light ball
+light clay
+loaded dice
+lopunnite
+love ball
+love sweet
+lucarionite
+lucky punch
+lum berry
+luminous moss
+lunalium z
+lure ball
+lustrous globe
+lustrous orb
+luxury ball
+lycanium z
+macho brace
+magmarizer
+magnet
+mago berry
+magost berry
+mail
+malicious armor
+manectite
+maranga berry
+marshadium z
+master ball
+masterpiece teacup
+mawilite
+meadow plate
+medichamite
+mental herb
+metagrossite
+metal alloy
+metal coat
+metal powder
+metronome
+mewnium z
+mewtwonite x
+mewtwonite y
+micle berry
+mimikium z
+mind plate
+miracle seed
+mirror herb
+misty seed
+moon ball
+moon stone
+muscle band
+mystic water
+nanab berry
+nest ball
+net ball
+never-melt ice
+nomel berry
+normal gem
+normalium z
+occa berry
+odd incense
+old amber
+oran berry
+oval stone
+pamtre berry
+park ball
+passho berry
+payapa berry
+pecha berry
+persim berry
+petaya berry
+pidgeotite
+pikanium z
+pikashunium z
+pinap berry
+pinsirite
+pixie plate
+plume fossil
+poison barb
+poison gem
+poison memory
+poisonium z
+poke ball
+pomeg berry
+power anklet
+power band
+power belt
+power bracer
+power herb
+power lens
+power weight
+premier ball
+primarium z
+prism scale
+protective pads
+protector
+psychic gem
+psychic memory
+psychic seed
+psychium z
+punching glove
+qualot berry
+quick ball
+quick claw
+quick powder
+rabuta berry
+rare bone
+rawst berry
+razor claw
+razor fang
+razz berry
+reaper cloth
+red card
+red orb
+repeat ball
+ribbon sweet
+rindo berry
+ring target
+rock gem
+rock incense
+rock memory
+rockium z
+rocky helmet
+room service
+root fossil
+rose incense
+roseli berry
+rowap berry
+rusted shield
+rusted sword
+sablenite
+sachet
+safari ball
+safety goggles
+sail fossil
+salac berry
+salamencite
+sceptilite
+scizorite
+scope lens
+sea incense
+sharp beak
+sharpedonite
+shed shell
+shell bell
+shiny stone
+shock drive
+shuca berry
+silk scarf
+silver powder
+sitrus berry
+skull fossil
+sky plate
+slowbronite
+smooth rock
+snorlium z
+snowball
+soft sand
+solganium z
+soul dew
+spell tag
+spelon berry
+splash plate
+spooky plate
+sport ball
+starf berry
+star sweet
+steelixite
+steel gem
+steel memory
+steelium z
+stick
+sticky barb
+stone plate
+strange ball
+strawberry sweet
+sun stone
+swampertite
+sweet apple
+syrupy apple
+tamato berry
+tanga berry
+tapunium z
+tart apple
+terrain extender
+thick club
+throat spray
+thunder stone
+timer ball
+toxic orb
+toxic plate
+tr00
+tr01
+tr02
+tr03
+tr04
+tr05
+tr06
+tr07
+tr08
+tr09
+tr10
+tr11
+tr12
+tr13
+tr14
+tr15
+tr16
+tr17
+tr18
+tr19
+tr20
+tr21
+tr22
+tr23
+tr24
+tr25
+tr26
+tr27
+tr28
+tr29
+tr30
+tr31
+tr32
+tr33
+tr34
+tr35
+tr36
+tr37
+tr38
+tr39
+tr40
+tr41
+tr42
+tr43
+tr44
+tr45
+tr46
+tr47
+tr48
+tr49
+tr50
+tr51
+tr52
+tr53
+tr54
+tr55
+tr56
+tr57
+tr58
+tr59
+tr60
+tr61
+tr62
+tr63
+tr64
+tr65
+tr66
+tr67
+tr68
+tr69
+tr70
+tr71
+tr72
+tr73
+tr74
+tr75
+tr76
+tr77
+tr78
+tr79
+tr80
+tr81
+tr82
+tr83
+tr84
+tr85
+tr86
+tr87
+tr88
+tr89
+tr90
+tr91
+tr92
+tr93
+tr94
+tr95
+tr96
+tr97
+tr98
+tr99
+twisted spoon
+tyranitarite
+ultra ball
+ultranecrozium z
+unremarkable teacup
+up-grade
+utility umbrella
+venusaurite
+wacan berry
+water gem
+water memory
+water stone
+waterium z
+watmel berry
+wave incense
+weakness policy
+wellspring mask
+wepear berry
+whipped dream
+white herb
+wide lens
+wiki berry
+wise glasses
+yache berry
+zap plate
+zoom lens
+berserk gene
+berry
+bitter berry
+burnt berry
+gold berry
+ice berry
+mint berry
+miracle berry
+mystery berry
+pink bow
+polkadot bow
+prz cure berry
+psn cure berry
+crucibellite
+vile vial
