@@ -1,5 +1,8 @@
 /*
 * parser.rs
+*
+* logic for parsing the pokepaste text format
+* example found in paste.txt
 */
 
 use std::fmt;
@@ -23,7 +26,7 @@ impl fmt::Display for Pokemon {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "{}{} @ {}\nAbility: {}\nLevel: {}\nShiny: {}\nTera Type: {}\nEVs: {}\n{} Nature\nIVs: {}\nMoves: {:?}\n",
+            "{}{} @ {}\nAbility: {}\nLevel: {}\nShiny: {}\nTera Type: {}\nEVs: {}\n{} Nature\nIVs: {}\nMoves:\n",
             self.name,
             self.gender,
             self.item,
@@ -34,8 +37,12 @@ impl fmt::Display for Pokemon {
             self.evs,
             self.nature,
             self.ivs,
-            self.moves,
-        )
+        )?;
+        for m in &self.moves {
+            write!(f, "- {m}\n")?;
+        }
+
+        Ok(())
     }
 }
 

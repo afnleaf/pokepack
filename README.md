@@ -142,74 +142,109 @@ so here is where I am stuck, encoder decoder process could be in the same module
 
 pokepaste format <-> string pokemon struct <-> binary pokemon struct <-> packed u32, u8, u128
 
-so maybe one module for text, one for binary and one for the pokemon information.
+modules:
+- dex.rs        (pokemon info)
+- parser.rs     (deals with pokepaste)
+- binary.rs     (deals with packing/unpacking the &[u8; 21] format)
+- codec.rs      (deals with conversion between string and unpacked bin formats)
 
-dex.rs
-text.rs
-binary.rs
+The next step is figuring out what to do with this. We have a library, sort of, but no real way to use it besides some plumber code in our main. What is the goal here? This could be a crate for people in the future, but what is the output people want? The input is clear, its the pokepaste format. The key innovation here is some sort of 10x encoded string variation of the pokepaste, but what is the chosen representation for the &[u8; 21] byte array? The module needs to stay alive somehow, otherwise there is no use in loading and building 6 vecs and hashmaps of ground truth info each time the library is called. 
 
+Ideally this is an active pipeline that sits inside pokemon showdown and helps with minimizing team storage. It needs to be a lightweight module, a wasm module. But what is the output? A string of hex bytes? Octet? Decimal old fashioned 00001010?
+
+Options
+
+- hex, 2x inflation
+- base64, 1.33x
+- base122, 1.14x (this could be cool to tackle)
+
+I have experience encoding wasm bytecode in base64, then compressing it with brotli, as a way of inlining wasm modules inside html. 
 
 ### Current Output
 ```
 basculegion @ focus sash
 Ability: adaptability
 Level: 50
-Shiny:
+Shiny: 
 Tera Type: ghost
 EVs: 4 HP / 252 Atk /  Def /  SpA /  SpD / 252 Spe
 adamant Nature
 IVs:  HP /  Atk /  Def /  SpA /  SpD /  Spe
-Moves: ["liquidation", "last respects", "aqua jet", "protect"]
+Moves:
+- liquidation
+- last respects
+- aqua jet
+- protect
 
 maushold-four @ rocky helmet
 Ability: friend guard
 Level: 50
-Shiny:
+Shiny: 
 Tera Type: poison
 EVs: 252 HP / 4 Atk / 180 Def /  SpA / 20 SpD / 52 Spe
 jolly Nature
 IVs:  HP /  Atk /  Def /  SpA /  SpD /  Spe
-Moves: ["super fang", "feint", "follow me", "protect"]
+Moves:
+- super fang
+- feint
+- follow me
+- protect
 
 dragonite @ loaded dice
 Ability: multiscale
 Level: 50
-Shiny:
+Shiny: 
 Tera Type: fairy
 EVs: 44 HP / 204 Atk / 4 Def /  SpA / 4 SpD / 252 Spe
 jolly Nature
 IVs:  HP /  Atk /  Def /  SpA /  SpD /  Spe
-Moves: ["scale shot", "tailwind", "haze", "protect"]
+Moves:
+- scale shot
+- tailwind
+- haze
+- protect
 
 incineroar @ safety goggles
 Ability: intimidate
 Level: 50
-Shiny:
+Shiny: 
 Tera Type: grass
 EVs: 196 HP / 4 Atk / 4 Def /  SpA / 68 SpD / 236 Spe
 jolly Nature
 IVs:  HP /  Atk /  Def /  SpA /  SpD /  Spe
-Moves: ["flare blitz", "knock off", "fake out", "parting shot"]
+Moves:
+- flare blitz
+- knock off
+- fake out
+- parting shot
 
 ursaluna-bloodmoon @ assault vest
 Ability: mind's eye
 Level: 50
-Shiny:
+Shiny: 
 Tera Type: fire
 EVs: 156 HP /  Atk / 4 Def / 116 SpA / 100 SpD / 132 Spe
 modest Nature
 IVs:  HP / 0 Atk /  Def /  SpA /  SpD /  Spe
-Moves: ["blood moon", "earth power", "hyper voice", "vacuum wave"]
+Moves:
+- blood moon
+- earth power
+- hyper voice
+- vacuum wave
 
 gholdengo @ choice specs
 Ability: good as gold
 Level: 50
-Shiny:
+Shiny: 
 Tera Type: steel
 EVs: 228 HP /  Atk / 84 Def / 52 SpA / 60 SpD / 84 Spe
 modest Nature
 IVs:  HP /  Atk /  Def /  SpA /  SpD /  Spe
-Moves: ["make it rain", "shadow ball", "power gem", "trick"]
+Moves:
+- make it rain
+- shadow ball
+- power gem
+- trick
 
 Packed: [94, 11, 08, 5E, 64, 70, 27, E0, 00, 00, 07, E1, 7F, FF, FF, FF, B1, B5, 67, 5C, B8]
 Unpacked: 04A0 0002 0084 005E 0032 0000 000E 0004 00FC 0000 0000 0000 00FC 0005 001F 001F 001F 001F 001F 001F 02C6 0356 01D7 00B8
@@ -217,12 +252,16 @@ String:
 basculegion @ focus sash
 Ability: adaptability
 Level: 50
-Shiny:
+Shiny: 
 Tera Type: ghost
 EVs: 4 HP / 252 Atk / 0 Def / 0 SpA / 0 SpD / 252 Spe
 adamant Nature
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Moves: ["liquidation", "last respects", "aqua jet", "protect"]
+Moves:
+- liquidation
+- last respects
+- aqua jet
+- protect
 
 Packed: [97, 72, 8E, 87, 64, 37, E0, 25, A0, 00, A1, A5, BF, FF, FF, FF, 29, 17, E4, 70, B8]
 Unpacked: 04BB 0002 0147 0087 0032 0000 0006 00FC 0004 00B4 0000 0014 0034 0016 001F 001F 001F 001F 001F 001F 00A4 017E 011C 00B8
@@ -230,12 +269,16 @@ String:
 maushold-four @ rocky helmet
 Ability: friend guard
 Level: 50
-Shiny:
+Shiny: 
 Tera Type: poison
 EVs: 252 HP / 4 Atk / 180 Def / 0 SpA / 20 SpD / 52 Spe
 jolly Nature
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Moves: ["super fang", "feint", "follow me", "protect"]
+Moves:
+- super fang
+- feint
+- follow me
+- protect
 
 Packed: [1C, 71, A2, 8B, 64, 89, 66, 60, 20, 00, 27, E5, BF, FF, FF, FF, C7, D8, 01, D0, B8]
 Unpacked: 00E3 0002 00D1 008B 0032 0000 0011 002C 00CC 0004 0000 0004 00FC 0016 001F 001F 001F 001F 001F 001F 031F 0180 0074 00B8
@@ -243,12 +286,16 @@ String:
 dragonite @ loaded dice
 Ability: multiscale
 Level: 50
-Shiny:
+Shiny: 
 Tera Type: fairy
 EVs: 44 HP / 204 Atk / 4 Def / 0 SpA / 4 SpD / 252 Spe
 jolly Nature
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Moves: ["scale shot", "tailwind", "haze", "protect"]
+Moves:
+- scale shot
+- tailwind
+- haze
+- protect
 
 Packed: [74, 92, A4, 19, 64, 2E, 20, 20, 20, 02, 27, 65, BF, FF, FF, FF, 67, 12, C4, 3A, 51]
 Unpacked: 03A4 0002 0152 0019 0032 0000 0005 00C4 0004 0004 0000 0044 00EC 0016 001F 001F 001F 001F 001F 001F 019C 012C 010E 0251
@@ -256,12 +303,16 @@ String:
 incineroar @ safety goggles
 Ability: intimidate
 Level: 50
-Shiny:
+Shiny: 
 Tera Type: grass
 EVs: 196 HP / 4 Atk / 4 Def / 0 SpA / 68 SpD / 236 Spe
 jolly Nature
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Moves: ["flare blitz", "knock off", "fake out", "parting shot"]
+Moves:
+- flare blitz
+- knock off
+- fake out
+- parting shot
 
 Packed: [93, F0, 25, 2F, 64, 0C, E0, 00, 23, A3, 24, 23, 7E, 0F, FF, FF, E1, 5B, 05, 09, AC]
 Unpacked: 049F 0002 0012 012F 0032 0000 0001 009C 0000 0004 0074 0064 0084 000D 001F 0000 001F 001F 001F 001F 0385 01B0 0142 01AC
@@ -269,12 +320,16 @@ String:
 ursaluna-bloodmoon @ assault vest
 Ability: mind's eye
 Level: 50
-Shiny:
+Shiny: 
 Tera Type: fire
 EVs: 156 HP / 0 Atk / 4 Def / 116 SpA / 100 SpD / 132 Spe
 modest Nature
 IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Moves: ["blood moon", "earth power", "hyper voice", "vacuum wave"]
+Moves:
+- blood moon
+- earth power
+- hyper voice
+- vacuum wave
 
 Packed: [A1, 90, 79, 1E, 64, 87, 20, 02, A1, A1, E2, A3, 7F, FF, FF, FF, DA, 90, 96, A9, 21]
 Unpacked: 050C 0002 003C 011E 0032 0000 0010 00E4 0000 0054 0034 003C 0054 000D 001F 001F 001F 001F 001F 001F 036A 0109 01AA 0121
@@ -282,12 +337,16 @@ String:
 gholdengo @ choice specs
 Ability: good as gold
 Level: 50
-Shiny:
+Shiny: 
 Tera Type: steel
 EVs: 228 HP / 0 Atk / 84 Def / 52 SpA / 60 SpD / 84 Spe
 modest Nature
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Moves: ["make it rain", "shadow ball", "power gem", "trick"]
+Moves:
+- make it rain
+- shadow ball
+- power gem
+- trick
 ```
 
 
