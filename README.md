@@ -154,199 +154,145 @@ Ideally this is an active pipeline that sits inside pokemon showdown and helps w
 
 Options
 
+- raw byte array, [0-255; 21]
 - hex, 2x inflation
-- base64, 1.33x
+- base64, 1.33x (url safe?)
 - base122, 1.14x (this could be cool to tackle)
 
 I have experience encoding wasm bytecode in base64, then compressing it with brotli, as a way of inlining wasm modules inside html. 
 
+How to solve case sensitivity? This is what putting gholdengo does, defaults to 0.
+```
+Bulbasaur @ Choice Specs
+Ability: Good as Gold
+Level: 50
+Shiny:
+Tera Type: Steel
+EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Modest Nature
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Moves:
+- Make It Rain
+- Shadow Ball
+- Power Gem
+- Trick
+```
+Check if both exact input and comparing it to_lowercase of both map/table.
+
+To avoid having to build the dex each time the library functions are called, we make use of a global static reference to the Dex with OnceLock. Which gets parsed and built once. I wonder what implications compile time would have for this problem.
+
+Now making the wasm modules. Can offload this to start from wasm_bindgen, this could happen when the module gets loaded. We need to expose the functions in the lib to bindgen. Have to make sure to remember how to compile with wasm-pack. Then we will move over to htmlpacker. 
+
 ### Current Output
 ```
-basculegion @ focus sash
-Ability: adaptability
-Level: 50
-Shiny: 
-Tera Type: ghost
-EVs: 4 HP / 252 Atk /  Def /  SpA /  SpD / 252 Spe
-adamant Nature
-IVs:  HP /  Atk /  Def /  SpA /  SpD /  Spe
-Moves:
-- liquidation
-- last respects
-- aqua jet
-- protect
+Raw Bytes:
+[148, 17, 90, 94, 100, 112, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 177, 181, 103, 92, 184]
+[151, 113, 220, 135, 100, 48, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 41, 23, 228, 112, 184]
+[28, 116, 30, 139, 100, 136, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 199, 216, 1, 208, 184]
+[116, 146, 36, 25, 100, 40, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 103, 18, 196, 58, 81]
+[147, 242, 25, 47, 100, 8, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 225, 91, 5, 9, 172]
+[161, 145, 135, 30, 100, 128, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 218, 144, 150, 169, 33]
 
-maushold-four @ rocky helmet
-Ability: friend guard
-Level: 50
-Shiny: 
-Tera Type: poison
-EVs: 252 HP / 4 Atk / 180 Def /  SpA / 20 SpD / 52 Spe
-jolly Nature
-IVs:  HP /  Atk /  Def /  SpA /  SpD /  Spe
-Moves:
-- super fang
-- feint
-- follow me
-- protect
+Hex:
+94115A5E64700000000000003FFFFFFFB1B5675CB8
+9771DC8764300000000000003FFFFFFF2917E470B8
+1C741E8B64880000000000003FFFFFFFC7D801D0B8
+7492241964280000000000003FFFFFFF6712C43A51
+93F2192F64080000000000003FFFFFFFE15B0509AC
+A191871E64800000000000003FFFFFFFDA9096A921
 
-dragonite @ loaded dice
-Ability: multiscale
-Level: 50
-Shiny: 
-Tera Type: fairy
-EVs: 44 HP / 204 Atk / 4 Def /  SpA / 4 SpD / 252 Spe
-jolly Nature
-IVs:  HP /  Atk /  Def /  SpA /  SpD /  Spe
-Moves:
-- scale shot
-- tailwind
-- haze
-- protect
+Base64:
+lBFaXmRwAAAAAAAAP////7G1Z1y4
+l3Hch2QwAAAAAAAAP////ykX5HC4
+HHQei2SIAAAAAAAAP////8fYAdC4
+dJIkGWQoAAAAAAAAP////2cSxDpR
+k/IZL2QIAAAAAAAAP////+FbBQms
+oZGHHmSAAAAAAAAAP////9qQlqkh
 
-incineroar @ safety goggles
-Ability: intimidate
+Conversion:
+Basculegion @ Focus Sash
+Ability: Adaptability
 Level: 50
-Shiny: 
-Tera Type: grass
-EVs: 196 HP / 4 Atk / 4 Def /  SpA / 68 SpD / 236 Spe
-jolly Nature
-IVs:  HP /  Atk /  Def /  SpA /  SpD /  Spe
-Moves:
-- flare blitz
-- knock off
-- fake out
-- parting shot
-
-ursaluna-bloodmoon @ assault vest
-Ability: mind's eye
-Level: 50
-Shiny: 
-Tera Type: fire
-EVs: 156 HP /  Atk / 4 Def / 116 SpA / 100 SpD / 132 Spe
-modest Nature
-IVs:  HP / 0 Atk /  Def /  SpA /  SpD /  Spe
-Moves:
-- blood moon
-- earth power
-- hyper voice
-- vacuum wave
-
-gholdengo @ choice specs
-Ability: good as gold
-Level: 50
-Shiny: 
-Tera Type: steel
-EVs: 228 HP /  Atk / 84 Def / 52 SpA / 60 SpD / 84 Spe
-modest Nature
-IVs:  HP /  Atk /  Def /  SpA /  SpD /  Spe
-Moves:
-- make it rain
-- shadow ball
-- power gem
-- trick
-
-Packed: [94, 11, 08, 5E, 64, 70, 27, E0, 00, 00, 07, E1, 7F, FF, FF, FF, B1, B5, 67, 5C, B8]
-Unpacked: 04A0 0002 0084 005E 0032 0000 000E 0004 00FC 0000 0000 0000 00FC 0005 001F 001F 001F 001F 001F 001F 02C6 0356 01D7 00B8
-String:
-basculegion @ focus sash
-Ability: adaptability
-Level: 50
-Shiny: 
-Tera Type: ghost
-EVs: 4 HP / 252 Atk / 0 Def / 0 SpA / 0 SpD / 252 Spe
-adamant Nature
+Shiny:
+Tera Type: Ghost
+EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Bashful Nature
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Moves:
-- liquidation
-- last respects
-- aqua jet
-- protect
+- Liquidation
+- Last Respects
+- Aqua Jet
+- Protect
 
-Packed: [97, 72, 8E, 87, 64, 37, E0, 25, A0, 00, A1, A5, BF, FF, FF, FF, 29, 17, E4, 70, B8]
-Unpacked: 04BB 0002 0147 0087 0032 0000 0006 00FC 0004 00B4 0000 0014 0034 0016 001F 001F 001F 001F 001F 001F 00A4 017E 011C 00B8
-String:
-maushold-four @ rocky helmet
-Ability: friend guard
+Maushold-Four @ Rocky Helmet
+Ability: Friend Guard
 Level: 50
-Shiny: 
-Tera Type: poison
-EVs: 252 HP / 4 Atk / 180 Def / 0 SpA / 20 SpD / 52 Spe
-jolly Nature
+Shiny:
+Tera Type: Poison
+EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Bashful Nature
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Moves:
-- super fang
-- feint
-- follow me
-- protect
+- Super Fang
+- Feint
+- Follow Me
+- Protect
 
-Packed: [1C, 71, A2, 8B, 64, 89, 66, 60, 20, 00, 27, E5, BF, FF, FF, FF, C7, D8, 01, D0, B8]
-Unpacked: 00E3 0002 00D1 008B 0032 0000 0011 002C 00CC 0004 0000 0004 00FC 0016 001F 001F 001F 001F 001F 001F 031F 0180 0074 00B8
-String:
-dragonite @ loaded dice
-Ability: multiscale
+Dragonite @ Loaded Dice
+Ability: Multiscale
 Level: 50
-Shiny: 
-Tera Type: fairy
-EVs: 44 HP / 204 Atk / 4 Def / 0 SpA / 4 SpD / 252 Spe
-jolly Nature
+Shiny:
+Tera Type: Fairy
+EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Bashful Nature
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Moves:
-- scale shot
-- tailwind
-- haze
-- protect
+- Scale Shot
+- Tailwind
+- Haze
+- Protect
 
-Packed: [74, 92, A4, 19, 64, 2E, 20, 20, 20, 02, 27, 65, BF, FF, FF, FF, 67, 12, C4, 3A, 51]
-Unpacked: 03A4 0002 0152 0019 0032 0000 0005 00C4 0004 0004 0000 0044 00EC 0016 001F 001F 001F 001F 001F 001F 019C 012C 010E 0251
-String:
-incineroar @ safety goggles
-Ability: intimidate
+Incineroar @ Safety Goggles
+Ability: Intimidate
 Level: 50
-Shiny: 
-Tera Type: grass
-EVs: 196 HP / 4 Atk / 4 Def / 0 SpA / 68 SpD / 236 Spe
-jolly Nature
+Shiny:
+Tera Type: Grass
+EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Bashful Nature
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Moves:
-- flare blitz
-- knock off
-- fake out
-- parting shot
+- Flare Blitz
+- Knock Off
+- Fake Out
+- Parting Shot
 
-Packed: [93, F0, 25, 2F, 64, 0C, E0, 00, 23, A3, 24, 23, 7E, 0F, FF, FF, E1, 5B, 05, 09, AC]
-Unpacked: 049F 0002 0012 012F 0032 0000 0001 009C 0000 0004 0074 0064 0084 000D 001F 0000 001F 001F 001F 001F 0385 01B0 0142 01AC
-String:
-ursaluna-bloodmoon @ assault vest
-Ability: mind's eye
+Ursaluna-Bloodmoon @ Assault Vest
+Ability: Mind's Eye
 Level: 50
-Shiny: 
-Tera Type: fire
-EVs: 156 HP / 0 Atk / 4 Def / 116 SpA / 100 SpD / 132 Spe
-modest Nature
-IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Moves:
-- blood moon
-- earth power
-- hyper voice
-- vacuum wave
-
-Packed: [A1, 90, 79, 1E, 64, 87, 20, 02, A1, A1, E2, A3, 7F, FF, FF, FF, DA, 90, 96, A9, 21]
-Unpacked: 050C 0002 003C 011E 0032 0000 0010 00E4 0000 0054 0034 003C 0054 000D 001F 001F 001F 001F 001F 001F 036A 0109 01AA 0121
-String:
-gholdengo @ choice specs
-Ability: good as gold
-Level: 50
-Shiny: 
-Tera Type: steel
-EVs: 228 HP / 0 Atk / 84 Def / 52 SpA / 60 SpD / 84 Spe
-modest Nature
+Shiny:
+Tera Type: Fire
+EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Bashful Nature
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Moves:
-- make it rain
-- shadow ball
-- power gem
-- trick
+- Blood Moon
+- Earth Power
+- Hyper Voice
+- Vacuum Wave
+
+Gholdengo @ Choice Specs
+Ability: Good as Gold
+Level: 50
+Shiny:
+Tera Type: Steel
+EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Bashful Nature
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Moves:
+- Make It Rain
+- Shadow Ball
+- Power Gem
+- Trick
 ```
 
 

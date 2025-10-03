@@ -7,28 +7,28 @@
 import { strict as assert } from 'node:assert';
 import {Dex} from '@pkmn/dex';
 
-const allPokemon = Dex.forGen(9).species.all();
-// c for loop cause its easier for me conceptually
+//const allPokemon = Dex.forGen(9).species.all();
+//// c for loop cause its easier for me conceptually
 //for(let i = 0; i < allPokemon.length; i++) {
 //    let pokemon = allPokemon[i];
-//    console.log(pokemon.name.toLowerCase());
+//    console.log(pokemon.name);
 //}
 //console.log(`Names: ${allPokemon.length}`);
 
-const allItems = Dex.forGen(9).items.all();
+//const allItems = Dex.forGen(9).items.all();
 //allItems.sort((a, b) => a.num - b.num);
 //for(let i = 0; i < allItems.length; i++) {
 //    let item = allItems[i];
-//    console.log(item.name.toLowerCase());
+//    console.log(item.name);
 //}
 //console.log(`Items: ${allItems.length}`);
 
-const allAbilities = Dex.forGen(9).abilities.all();
-// sort by number for better gen compatability?
+//const allAbilities = Dex.forGen(9).abilities.all();
+//// sort by number for better gen compatability?
 //allAbilities.sort((a, b) => a.num - b.num);
 //for(let i = 0; i < allAbilities.length; i++) {
 //    let ability = allAbilities[i];
-//    console.log(ability.name.toLowerCase());
+//    console.log(ability.name);
 //}
 //console.log(`Abilities: ${allAbilities.length}`);
 
@@ -36,7 +36,7 @@ const allMoves = Dex.forGen(9).moves.all();
 allMoves.sort((a, b) => a.num - b.num);
 for(let i = 0; i < allMoves.length; i++) {
     let move = allMoves[i];
-    console.log(move.name.toLowerCase());
+    console.log(move.name);
 }
 //console.log(`Moves: ${allMoves.length}`);
 

@@ -106,6 +106,7 @@ fn parse_tvs(text: String) -> Tv {
     tv
 }
 
+// how to deal with case sensitivity?
 fn parse_pokemon(text: String) -> Pokemon {
     let mut pokemon = Pokemon::default();
 
@@ -116,7 +117,8 @@ fn parse_pokemon(text: String) -> Pokemon {
         //println!("{:?}", parts);
         if parts.len() >= 2 {
             //println!(" 2");
-            match parts[0] {
+            
+            match parts[0].to_lowercase().as_str() {
                 "ability" => pokemon.ability = parts[1].trim().into(),
                 "level" => pokemon.level = parts[1].trim().into(),
                 "tera type" => pokemon.tera = parts[1].trim().into(),
@@ -150,7 +152,8 @@ fn parse_pokemon(text: String) -> Pokemon {
 }
 
 pub fn parse_pokepaste(paste: String) -> Vec<Pokemon>{
-    let text = paste.trim().to_lowercase();
+    //let text = paste.trim().to_lowercase();
+    let text = paste.trim();
     //println!("{}", text);
     let blocks = split_into_blocks(&text);
     let mut vec_pokemon: Vec<Pokemon> = Vec::new();

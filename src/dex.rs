@@ -35,10 +35,33 @@ pub struct Maps {
     pub teras:      HashMap<String, usize>,
 }
 
+
 pub struct Dex {
     pub tables: Tables,
     pub maps: Maps,
 }
+
+impl Dex {
+    pub fn build() -> Self {
+        let tables = parse_tables();
+        let maps = build_maps(&tables);
+        Dex {
+            tables,
+            maps,
+        }
+    }
+}
+
+/*
+pub fn build_dex() -> Dex {
+    let tables = parse_tables();
+    let maps = build_maps(&tables);
+    Dex {
+        tables,
+        maps,
+    }
+}
+*/
 
 fn parse_tables() -> Tables {
     Tables {
@@ -86,12 +109,4 @@ fn build_map(table: &Vec<String>) -> HashMap<String, usize> {
     map
 }
 
-pub fn build_dex() -> Dex {
-    let tables = parse_tables();
-    let maps = build_maps(&tables);
-    Dex {
-        tables,
-        maps,
-    }
-}
 

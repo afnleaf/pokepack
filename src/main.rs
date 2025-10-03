@@ -4,45 +4,45 @@
 * just some testing of the library
 */
 
-use pokepack::{
-    dex::{self, Dex, Tables, Maps},
-    parser::{self, Pokemon},
-    binary::{self, PokemonBin},
-    codec::{self},
-};
-
 fn main() {
     tests();
 }
 
 fn tests() {
-    //let tables = parse_tables();
-    //println!("{:?}", tables);
-    let dex: Dex = dex::build_dex();
-    let tables: Tables = dex.tables;
-    let maps: Maps = dex.maps;
-
-    let test: &str = include_str!("../paste.txt");
-    
-    let vec_pokemon: Vec<Pokemon> = parser::parse_pokepaste(test.into());
-    for p in &vec_pokemon {
-        println!("{}", p);
+    let testpaste: &str = include_str!("../paste.txt");
+    let output_bytes = pokepack::pokepaste_to_byte_array(testpaste.into());
+    println!("Raw Bytes:");
+    for a in output_bytes {
+        println!("{:?}", a);
     }
+    println!();
 
-    let vec_encoded_pokemon: Vec<PokemonBin> = 
-        codec::encode_all_pokemon(&maps, vec_pokemon);
+    let output_hex = pokepack::pokepaste_to_hex(testpaste.into());
+    println!("Hex:\n{}", output_hex);
+    let output_b64 = pokepack::pokepaste_to_base64(testpaste.into());
+    println!("Base64:\n{}", &output_b64);
 
-    for v in &vec_encoded_pokemon {
-        let packed_bytes = v.pack_to_bytes();
-        println!("Packed: {:02X?}", packed_bytes);
-        let unpacked_bytes = binary::unpack_from_bytes(&packed_bytes);
-        println!("Unpacked: {}", unpacked_bytes);
-        let poke_string = codec::pokebin_to_string(&tables, &unpacked_bytes);
-        println!("String:\n{}", poke_string);
-
-    }
+    let s = pokepack::base64_to_pokepaste(output_b64);
+    println!("Conversion:\n{}", &s);
 }
 
+//use pokepack::{
+//    dex::{self, Dex, Tables, Maps},
+//    parser::{self, Pokemon},
+//    binary::{self, PokemonBin},
+//    codec::{self},
+//};
+    //for v in &vec_encoded_pokemon {
+    //    let packed_bytes = v.pack_to_bytes();
+    //    println!("Packed: {:02X?}", packed_bytes);
+    //    let unpacked_bytes = binary::unpack_from_bytes(&packed_bytes);
+    //    println!("Unpacked: {}", unpacked_bytes);
+    //    let poke_string = codec::pokebin_to_string(&tables, &unpacked_bytes);
+    //    println!("String:\n{}", poke_string);
+    //}
+    //for p in &vec_pokemon {
+    //    println!("{}", p);
+    //}
 
     // imperative way?
     /*

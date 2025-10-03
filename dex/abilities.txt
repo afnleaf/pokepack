@@ -1,314 +1,314 @@
-persistent
-rebound
-mountaineer
-no ability
-stench
-drizzle
-speed boost
-battle armor
-sturdy
-damp
-limber
-sand veil
-static
-volt absorb
-water absorb
-oblivious
-cloud nine
-compound eyes
-insomnia
-color change
-immunity
-flash fire
-shield dust
-own tempo
-suction cups
-intimidate
-shadow tag
-rough skin
-wonder guard
-levitate
-effect spore
-synchronize
-clear body
-natural cure
-lightning rod
-serene grace
-swift swim
-chlorophyll
-illuminate
-trace
-huge power
-poison point
-inner focus
-magma armor
-water veil
-magnet pull
-soundproof
-rain dish
-sand stream
-pressure
-thick fat
-early bird
-flame body
-run away
-keen eye
-hyper cutter
-pickup
-truant
-hustle
-cute charm
-plus
-minus
-forecast
-sticky hold
-shed skin
-guts
-marvel scale
-liquid ooze
-overgrow
-blaze
-torrent
-swarm
-rock head
-drought
-arena trap
-vital spirit
-white smoke
-pure power
-shell armor
-air lock
-tangled feet
-motor drive
-rivalry
-steadfast
-snow cloak
-gluttony
-anger point
-unburden
-heatproof
-simple
-dry skin
-download
-iron fist
-poison heal
-adaptability
-skill link
-hydration
-solar power
-quick feet
-normalize
-sniper
-magic guard
-no guard
-stall
-technician
-leaf guard
-klutz
-mold breaker
-super luck
-aftermath
-anticipation
-forewarn
-unaware
-tinted lens
-filter
-slow start
-scrappy
-storm drain
-ice body
-solid rock
-snow warning
-honey gather
-frisk
-reckless
-multitype
-flower gift
-bad dreams
-pickpocket
-sheer force
-contrary
-unnerve
-defiant
-defeatist
-cursed body
-healer
-friend guard
-weak armor
-heavy metal
-light metal
-multiscale
-toxic boost
-flare boost
-harvest
-telepathy
-moody
-overcoat
-poison touch
-regenerator
-big pecks
-sand rush
-wonder skin
-analytic
-illusion
-imposter
-infiltrator
-mummy
-moxie
-justified
-rattled
-magic bounce
-sap sipper
-prankster
-sand force
-iron barbs
-zen mode
-victory star
-turboblaze
-teravolt
-aroma veil
-flower veil
-cheek pouch
-protean
-fur coat
-magician
-bulletproof
-competitive
-strong jaw
-refrigerate
-sweet veil
-stance change
-gale wings
-mega launcher
-grass pelt
-symbiosis
-tough claws
-pixilate
-gooey
-aerilate
-parental bond
-dark aura
-fairy aura
-aura break
-primordial sea
-desolate land
-delta stream
-stamina
-wimp out
-emergency exit
-water compaction
-merciless
-shields down
-stakeout
-water bubble
-steelworker
-berserk
-slush rush
-long reach
-liquid voice
-triage
-galvanize
-surge surfer
-schooling
-disguise
-battle bond
-power construct
-corrosion
-comatose
-queenly majesty
-innards out
-dancer
-battery
-fluffy
-dazzling
-soul-heart
-tangling hair
-receiver
-power of alchemy
-beast boost
-rks system
-electric surge
-psychic surge
-misty surge
-grassy surge
-full metal body
-shadow shield
-prism armor
-neuroforce
-intrepid sword
-dauntless shield
-libero
-ball fetch
-cotton down
-propeller tail
-mirror armor
-gulp missile
-stalwart
-steam engine
-punk rock
-sand spit
-ice scales
-ripen
-ice face
-power spot
-mimicry
-screen cleaner
-steely spirit
-perish body
-wandering spirit
-gorilla tactics
-neutralizing gas
-pastel veil
-hunger switch
-quick draw
-unseen fist
-curious medicine
-transistor
-dragon's maw
-chilling neigh
-grim neigh
-as one (glastrier)
-as one (spectrier)
-lingering aroma
-seed sower
-thermal exchange
-anger shell
-purifying salt
-well-baked body
-wind rider
-guard dog
-rocky payload
-wind power
-zero to hero
-commander
-electromorphosis
-protosynthesis
-quark drive
-good as gold
-beads of ruin
-tablets of ruin
-vessel of ruin
-sword of ruin
-orichalcum pulse
-hadron engine
-opportunist
-cud chew
-sharpness
-supreme overlord
-costar
-toxic debris
-armor tail
-earth eater
-mycelium might
-hospitality
-mind's eye
-embody aspect (teal)
-embody aspect (wellspring)
-embody aspect (hearthflame)
-embody aspect (cornerstone)
-toxic chain
-supersweet syrup
-tera shift
-tera shell
-teraform zero
-poison puppeteer
+Persistent
+Rebound
+Mountaineer
+No Ability
+Stench
+Drizzle
+Speed Boost
+Battle Armor
+Sturdy
+Damp
+Limber
+Sand Veil
+Static
+Volt Absorb
+Water Absorb
+Oblivious
+Cloud Nine
+Compound Eyes
+Insomnia
+Color Change
+Immunity
+Flash Fire
+Shield Dust
+Own Tempo
+Suction Cups
+Intimidate
+Shadow Tag
+Rough Skin
+Wonder Guard
+Levitate
+Effect Spore
+Synchronize
+Clear Body
+Natural Cure
+Lightning Rod
+Serene Grace
+Swift Swim
+Chlorophyll
+Illuminate
+Trace
+Huge Power
+Poison Point
+Inner Focus
+Magma Armor
+Water Veil
+Magnet Pull
+Soundproof
+Rain Dish
+Sand Stream
+Pressure
+Thick Fat
+Early Bird
+Flame Body
+Run Away
+Keen Eye
+Hyper Cutter
+Pickup
+Truant
+Hustle
+Cute Charm
+Plus
+Minus
+Forecast
+Sticky Hold
+Shed Skin
+Guts
+Marvel Scale
+Liquid Ooze
+Overgrow
+Blaze
+Torrent
+Swarm
+Rock Head
+Drought
+Arena Trap
+Vital Spirit
+White Smoke
+Pure Power
+Shell Armor
+Air Lock
+Tangled Feet
+Motor Drive
+Rivalry
+Steadfast
+Snow Cloak
+Gluttony
+Anger Point
+Unburden
+Heatproof
+Simple
+Dry Skin
+Download
+Iron Fist
+Poison Heal
+Adaptability
+Skill Link
+Hydration
+Solar Power
+Quick Feet
+Normalize
+Sniper
+Magic Guard
+No Guard
+Stall
+Technician
+Leaf Guard
+Klutz
+Mold Breaker
+Super Luck
+Aftermath
+Anticipation
+Forewarn
+Unaware
+Tinted Lens
+Filter
+Slow Start
+Scrappy
+Storm Drain
+Ice Body
+Solid Rock
+Snow Warning
+Honey Gather
+Frisk
+Reckless
+Multitype
+Flower Gift
+Bad Dreams
+Pickpocket
+Sheer Force
+Contrary
+Unnerve
+Defiant
+Defeatist
+Cursed Body
+Healer
+Friend Guard
+Weak Armor
+Heavy Metal
+Light Metal
+Multiscale
+Toxic Boost
+Flare Boost
+Harvest
+Telepathy
+Moody
+Overcoat
+Poison Touch
+Regenerator
+Big Pecks
+Sand Rush
+Wonder Skin
+Analytic
+Illusion
+Imposter
+Infiltrator
+Mummy
+Moxie
+Justified
+Rattled
+Magic Bounce
+Sap Sipper
+Prankster
+Sand Force
+Iron Barbs
+Zen Mode
+Victory Star
+Turboblaze
+Teravolt
+Aroma Veil
+Flower Veil
+Cheek Pouch
+Protean
+Fur Coat
+Magician
+Bulletproof
+Competitive
+Strong Jaw
+Refrigerate
+Sweet Veil
+Stance Change
+Gale Wings
+Mega Launcher
+Grass Pelt
+Symbiosis
+Tough Claws
+Pixilate
+Gooey
+Aerilate
+Parental Bond
+Dark Aura
+Fairy Aura
+Aura Break
+Primordial Sea
+Desolate Land
+Delta Stream
+Stamina
+Wimp Out
+Emergency Exit
+Water Compaction
+Merciless
+Shields Down
+Stakeout
+Water Bubble
+Steelworker
+Berserk
+Slush Rush
+Long Reach
+Liquid Voice
+Triage
+Galvanize
+Surge Surfer
+Schooling
+Disguise
+Battle Bond
+Power Construct
+Corrosion
+Comatose
+Queenly Majesty
+Innards Out
+Dancer
+Battery
+Fluffy
+Dazzling
+Soul-Heart
+Tangling Hair
+Receiver
+Power of Alchemy
+Beast Boost
+RKS System
+Electric Surge
+Psychic Surge
+Misty Surge
+Grassy Surge
+Full Metal Body
+Shadow Shield
+Prism Armor
+Neuroforce
+Intrepid Sword
+Dauntless Shield
+Libero
+Ball Fetch
+Cotton Down
+Propeller Tail
+Mirror Armor
+Gulp Missile
+Stalwart
+Steam Engine
+Punk Rock
+Sand Spit
+Ice Scales
+Ripen
+Ice Face
+Power Spot
+Mimicry
+Screen Cleaner
+Steely Spirit
+Perish Body
+Wandering Spirit
+Gorilla Tactics
+Neutralizing Gas
+Pastel Veil
+Hunger Switch
+Quick Draw
+Unseen Fist
+Curious Medicine
+Transistor
+Dragon's Maw
+Chilling Neigh
+Grim Neigh
+As One (Glastrier)
+As One (Spectrier)
+Lingering Aroma
+Seed Sower
+Thermal Exchange
+Anger Shell
+Purifying Salt
+Well-Baked Body
+Wind Rider
+Guard Dog
+Rocky Payload
+Wind Power
+Zero to Hero
+Commander
+Electromorphosis
+Protosynthesis
+Quark Drive
+Good as Gold
+Beads of Ruin
+Tablets of Ruin
+Vessel of Ruin
+Sword of Ruin
+Orichalcum Pulse
+Hadron Engine
+Opportunist
+Cud Chew
+Sharpness
+Supreme Overlord
+Costar
+Toxic Debris
+Armor Tail
+Earth Eater
+Mycelium Might
+Hospitality
+Mind's Eye
+Embody Aspect (Teal)
+Embody Aspect (Wellspring)
+Embody Aspect (Hearthflame)
+Embody Aspect (Cornerstone)
+Toxic Chain
+Supersweet Syrup
+Tera Shift
+Tera Shell
+Teraform Zero
+Poison Puppeteer
