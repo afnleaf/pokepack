@@ -94,7 +94,7 @@ fn decode_tvs(tvs: TvBin) -> Tv {
         spd:    tvs.spd.to_string(),
         spe:    tvs.spe.to_string(),
     }
-}
+} 
 
 fn encode_tvs(tvs: Tv, ifiv: bool) -> TvBin {
     TvBin {
@@ -123,7 +123,7 @@ pub fn encoded_pokemon(maps: &Maps, pokemon: &Pokemon) -> PokemonBin {
         item:       element_to_binary(&maps.items, pokemon.item.clone()) as u16,
         ability:    element_to_binary(&maps.abilities, pokemon.ability.clone()) as u16,
         level:      small_to_u8(pokemon.level.clone(), false) as u8,
-        shiny:      false, // placeholder
+        shiny:      pokemon.shiny.to_lowercase() == "yes", // placeholder
         tera:       element_to_binary(&maps.teras, pokemon.tera.clone()) as u8,
         evs:        encode_tvs(pokemon.evs.clone(), false),
         nature:     element_to_binary(&maps.natures, pokemon.nature.clone()) as u8,

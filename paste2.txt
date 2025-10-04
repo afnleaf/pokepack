@@ -1,0 +1,36 @@
+Koraidon @ Life Orb  
+Ability: Orichalcum Pulse  
+Level: 50  
+Shiny: Yes  
+Tera Type: Fire  
+EVs: 4 HP / 252 Atk / 252 Spe  
+Jolly Nature  
+- Flame Charge  
+- Flare Blitz  
+- Close Combat  
+- Protect  
+
+Flutter Mane @ Focus Sash  
+Ability: Protosynthesis  
+Level: 50  
+Tera Type: Normal  
+EVs: 4 HP / 252 SpA / 252 Spe  
+Timid Nature  
+IVs: 0 Atk  
+- Moonblast  
+- Shadow Ball  
+- Icy Wind  
+- Taunt  
+
+Brute Bonnet @ Sitrus Berry  
+Ability: Protosynthesis  
+Level: 50  
+Shiny: Yes  
+Tera Type: Water  
+EVs: 252 HP / 4 Atk / 132 Def / 108 SpD / 12 Spe  
+Impish Nature  
+- Sucker Punch  
+- Seed Bomb  
+- Spore  
+- Rage Powder  
+

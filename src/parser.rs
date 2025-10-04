@@ -26,13 +26,22 @@ impl fmt::Display for Pokemon {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "{}{} @ {}\nAbility: {}\nLevel: {}\nShiny: {}\nTera Type: {}\nEVs: {}\n{} Nature\nIVs: {}\nMoves:\n",
+            "{}{} @ {}\nAbility: {}\nLevel: {}\n",
             self.name,
             self.gender,
             self.item,
             self.ability,
             self.level,
-            self.shiny,
+        )?;
+        if self.shiny.to_lowercase() == "yes" {
+            writeln!(
+                f,
+                "Shiny: Yes"
+            )?;
+        }
+        write!(
+            f,
+            "Tera Type: {}\nEVs: {}\n{} Nature\nIVs: {}\nMoves:\n",
             self.tera,
             self.evs,
             self.nature,
@@ -41,7 +50,6 @@ impl fmt::Display for Pokemon {
         for m in &self.moves {
             write!(f, "- {m}\n")?;
         }
-
         Ok(())
     }
 }
@@ -92,7 +100,7 @@ fn parse_tvs(text: String) -> Tv {
     for p in parts {
         //println!("p: -{}-", p);
         let c: Vec<&str> = p.trim().split(" ").collect();
-        match c[1] {
+        match c[1].to_lowercase().as_str() {
             "hp" => {tv.hp = c[0].into()},
             "atk" => {tv.atk = c[0].into()},
             "def" => {tv.def = c[0].into()},

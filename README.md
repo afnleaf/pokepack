@@ -183,116 +183,155 @@ To avoid having to build the dex each time the library functions are called, we 
 
 Now making the wasm modules. Can offload this to start from wasm_bindgen, this could happen when the module gets loaded. We need to expose the functions in the lib to bindgen. Have to make sure to remember how to compile with wasm-pack. Then we will move over to htmlpacker. 
 
-### Current Output
 ```
+#[wasm_bindgen]
+    | ^^^^^^^^^^^^^^^ the trait `wasm_bindgen::describe::WasmDescribe` is not implemented for `[u8; 21]`
+```
+
+So we need a way to describe the u8;21 array to be used with the js interop, otherwise we can't compile down to wasm. Makes sense, this is almost like a special data type. Vec<u8> is probably the trick, just take the array and flatten it. We fix up our public functions with some JsValues in the Result to propagate errors to the client. 
+
+### Current Output
+Used a new shorter paste as testcase
+```
+Koraidon @ Life Orb  
+Ability: Orichalcum Pulse  
+Level: 50  
+Shiny: Yes  
+Tera Type: Fire  
+EVs: 4 HP / 252 Atk / 252 Spe  
+Jolly Nature  
+- Flame Charge  
+- Flare Blitz  
+- Close Combat  
+- Protect  
+
+Flutter Mane @ Focus Sash  
+Ability: Protosynthesis  
+Level: 50  
+Tera Type: Normal  
+EVs: 4 HP / 252 SpA / 252 Spe  
+Timid Nature  
+IVs: 0 Atk  
+- Moonblast  
+- Shadow Ball  
+- Icy Wind  
+- Taunt  
+
+Brute Bonnet @ Sitrus Berry  
+Ability: Protosynthesis  
+Level: 50  
+Shiny: Yes  
+Tera Type: Water  
+EVs: 252 HP / 4 Atk / 132 Def / 108 SpD / 12 Spe  
+Impish Nature  
+- Sucker Punch  
+- Seed Bomb  
+- Spore  
+- Rage Powder  
+
+
+Building Pok??dex for the first time...
 Raw Bytes:
-[148, 17, 90, 94, 100, 112, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 177, 181, 103, 92, 184]
-[151, 113, 220, 135, 100, 48, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 41, 23, 228, 112, 184]
-[28, 116, 30, 139, 100, 136, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 199, 216, 1, 208, 184]
-[116, 146, 36, 25, 100, 40, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 103, 18, 196, 58, 81]
-[147, 242, 25, 47, 100, 8, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 225, 91, 5, 9, 172]
-[161, 145, 135, 30, 100, 128, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 218, 144, 150, 169, 33]
+[162, 113, 81, 35, 101, 8, 39, 224, 0, 0, 7, 224, 63, 255, 255, 255, 126, 153, 198, 16, 184]
+[159, 209, 91, 28, 100, 0, 32, 0, 7, 224, 7, 224, 62, 15, 255, 255, 150, 208, 147, 25, 31]
+[159, 176, 129, 28, 101, 31, 224, 36, 32, 3, 96, 96, 63, 255, 255, 255, 101, 218, 66, 85, 238]
 
 Hex:
-94115A5E64700000000000003FFFFFFFB1B5675CB8
-9771DC8764300000000000003FFFFFFF2917E470B8
-1C741E8B64880000000000003FFFFFFFC7D801D0B8
-7492241964280000000000003FFFFFFF6712C43A51
-93F2192F64080000000000003FFFFFFFE15B0509AC
-A191871E64800000000000003FFFFFFFDA9096A921
+A2715123650827E0000007E03FFFFFFF7E99C610B8
+9FD15B1C6400200007E007E03E0FFFFF96D093191F
+9FB0811C651FE024200360603FFFFFFF65DA4255EE
 
-Base64:
-lBFaXmRwAAAAAAAAP////7G1Z1y4
-l3Hch2QwAAAAAAAAP////ykX5HC4
-HHQei2SIAAAAAAAAP////8fYAdC4
-dJIkGWQoAAAAAAAAP////2cSxDpR
-k/IZL2QIAAAAAAAAP////+FbBQms
-oZGHHmSAAAAAAAAAP////9qQlqkh
-
-Conversion:
-Basculegion @ Focus Sash
-Ability: Adaptability
+Hex Conversion:
+Koraidon @ Life Orb
+Ability: Orichalcum Pulse
 Level: 50
-Shiny:
-Tera Type: Ghost
-EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-Bashful Nature
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Moves:
-- Liquidation
-- Last Respects
-- Aqua Jet
-- Protect
-
-Maushold-Four @ Rocky Helmet
-Ability: Friend Guard
-Level: 50
-Shiny:
-Tera Type: Poison
-EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-Bashful Nature
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Moves:
-- Super Fang
-- Feint
-- Follow Me
-- Protect
-
-Dragonite @ Loaded Dice
-Ability: Multiscale
-Level: 50
-Shiny:
-Tera Type: Fairy
-EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-Bashful Nature
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Moves:
-- Scale Shot
-- Tailwind
-- Haze
-- Protect
-
-Incineroar @ Safety Goggles
-Ability: Intimidate
-Level: 50
-Shiny:
-Tera Type: Grass
-EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-Bashful Nature
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-Moves:
-- Flare Blitz
-- Knock Off
-- Fake Out
-- Parting Shot
-
-Ursaluna-Bloodmoon @ Assault Vest
-Ability: Mind's Eye
-Level: 50
-Shiny:
+Shiny: Yes
 Tera Type: Fire
-EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+EVs: 4 HP / 252 Atk / 0 Def / 0 SpA / 0 SpD / 252 Spe
 Bashful Nature
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Moves:
-- Blood Moon
-- Earth Power
-- Hyper Voice
-- Vacuum Wave
+- Flame Charge
+- Flare Blitz
+- Close Combat
+- Protect
 
-Gholdengo @ Choice Specs
-Ability: Good as Gold
+
+Flutter Mane @ Focus Sash
+Ability: Protosynthesis
 Level: 50
-Shiny:
-Tera Type: Steel
-EVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
+Tera Type: Normal
+EVs: 4 HP / 0 Atk / 0 Def / 252 SpA / 0 SpD / 252 Spe
+Bashful Nature
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Moves:
+- Moonblast
+- Shadow Ball
+- Icy Wind
+- Taunt
+
+
+Brute Bonnet @ Sitrus Berry
+Ability: Protosynthesis
+Level: 50
+Shiny: Yes
+Tera Type: Water
+EVs: 252 HP / 4 Atk / 132 Def / 0 SpA / 108 SpD / 12 Spe
 Bashful Nature
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Moves:
-- Make It Rain
+- Sucker Punch
+- Seed Bomb
+- Spore
+- Rage Powder
+Base64:
+onFRI2UIJ+AAAAfgP////36ZxhC4
+n9FbHGQAIAAH4AfgPg///5bQkxkf
+n7CBHGUf4CQgA2BgP////2XaQlXu
+
+Base64 Conversion:
+Koraidon @ Life Orb
+Ability: Orichalcum Pulse
+Level: 50
+Shiny: Yes
+Tera Type: Fire
+EVs: 4 HP / 252 Atk / 0 Def / 0 SpA / 0 SpD / 252 Spe
+Bashful Nature
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Moves:
+- Flame Charge
+- Flare Blitz
+- Close Combat
+- Protect
+
+
+Flutter Mane @ Focus Sash
+Ability: Protosynthesis
+Level: 50
+Tera Type: Normal
+EVs: 4 HP / 0 Atk / 0 Def / 252 SpA / 0 SpD / 252 Spe
+Bashful Nature
+IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Moves:
+- Moonblast
 - Shadow Ball
-- Power Gem
-- Trick
+- Icy Wind
+- Taunt
+
+
+Brute Bonnet @ Sitrus Berry
+Ability: Protosynthesis
+Level: 50
+Shiny: Yes
+Tera Type: Water
+EVs: 252 HP / 4 Atk / 132 Def / 0 SpA / 108 SpD / 12 Spe
+Bashful Nature
+IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+Moves:
+- Sucker Punch
+- Seed Bomb
+- Spore
+- Rage Powder
 ```
 
 

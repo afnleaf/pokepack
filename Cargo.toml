@@ -1,7 +1,52 @@
 [package]
-name = "pokepack"
+name = "pokepacker"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+name = "pokepack"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
 [dependencies]
+# wasm
+js-sys = "0.3.77"
+wasm-bindgen = "0.2.100"
+wasm-bindgen-futures = "0.4"
+console_error_panic_hook = "0.1.7"
+web-sys = { version = "0.3", features = [ "console", "Window", "Response", "RequestInit", "RequestMode", "Headers", ] }
+# standard
 base64 = "0.22.1"
+hex = "0.4.3"
+
+# compilation settings
+# wasm-pack build --target no-modules
+[profile.dev]
+opt-level = 1
+incremental = true
+codegen-units = 16
+
+[profile.dev.package."*"]
+strip = true
+opt-level = 3
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+#panic = "abort"
+strip = true
+#debug = true
+
+# wasm-pack compilation
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = [
+    "-Oz", 
+    "--optimize-level=3", 
+    "--shrink-level=2", 
+    "--enable-bulk-memory", 
+    "--enable-nontrapping-float-to-int"
+]
+rustflags = []
+
+
