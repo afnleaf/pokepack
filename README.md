@@ -124,8 +124,6 @@ Packed: [A1, 90, 79, 1E, 64, 87, 20, 02, A1, A1, E2, A3, 7F, FF, FF, FF, DA, 90,
 
 There thats pretty clean, can either use spaces or not.
 
-
-
 ### The Implementation
 
 So, how are we going to get a list of all the names? I used the js package [@pkmn/dex](https://www.npmjs.com/package/@pkmn/dex) (which is part of the PS set of code), to access the data and output sorted lowercase text for each possible pokemon name, item, ability and move. This is also how I was able to confirm the count for each. Each aspect is in a different file and each element on a newline. From here we can parse and build a simple array representing each element in memory.
@@ -152,8 +150,7 @@ The next step is figuring out what to do with this. We have a library, sort of, 
 
 Ideally this is an active pipeline that sits inside pokemon showdown and helps with minimizing team storage. It needs to be a lightweight module, a wasm module. But what is the output? A string of hex bytes? Octet? Decimal old fashioned 00001010?
 
-Options
-
+Options:
 - raw byte array, [0-255; 21]
 - hex, 2x inflation
 - base64, 1.33x (url safe?)
@@ -190,8 +187,12 @@ Now making the wasm modules. Can offload this to start from wasm_bindgen, this c
 
 So we need a way to describe the u8;21 array to be used with the js interop, otherwise we can't compile down to wasm. Makes sense, this is almost like a special data type. Vec<u8> is probably the trick, just take the array and flatten it. We fix up our public functions with some JsValues in the Result to propagate errors to the client. 
 
+Next, I ask an AI to vibe code me a pure js/css frontend and I'll build the app using my [htmlpacker](https://github.com/afnleaf/htmlpacker) tool. This allows me to inline wasm modules inside a single htmlfile using base64 and brotli compression and completely bypass CORS. Check out the webapp [here](https://afnleaf.github.io/pokepack)
+
+Now I need to figure out what other parts of the library need to be refactored or improved.
+
 ### Current Output
-Used a new shorter paste as testcase
+Used a new shorter paste as testcase.
 ```
 Koraidon @ Life Orb  
 Ability: Orichalcum Pulse  

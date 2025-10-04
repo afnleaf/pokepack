@@ -1,0 +1,22 @@
+# /htmlpacker/config.yaml
+pack:
+  runtime:
+    enabled: true
+  meta:
+    title: "PokéPacker"
+    author: "afnleaf"
+    description: "A tool to compress and decompress Pokémon Showdown pastes."
+    keywords: "pokemon, showdown, compression, wasm, pokepaste"
+  css:
+    local:
+      - "./public/style.css"
+  scripts:
+    local:
+      - "./pkg/pokepack.js"
+      - "./public/script.js"
+  wasm:
+    module:
+      compile_wasm: false
+      path: "./pkg/pokepack_bg.wasm"
+      id: "bin-wasm-app"
+      compression: "brotli"
