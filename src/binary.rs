@@ -48,12 +48,12 @@ impl fmt::Display for PokemonBin {
 // training values either 0-31 or 0-255
 #[derive(Debug, Default, Clone)]
 pub struct TvBin {
-    pub hp: u8, 
-    pub atk: u8,
-    pub def: u8,
-    pub spa: u8,
-    pub spd: u8,
-    pub spe: u8,
+    pub hp:     u8, 
+    pub atk:    u8,
+    pub def:    u8,
+    pub spa:    u8,
+    pub spd:    u8,
+    pub spe:    u8,
 }
 
 impl fmt::Display for TvBin {

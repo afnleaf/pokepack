@@ -34,14 +34,11 @@ impl fmt::Display for Pokemon {
             self.level,
         )?;
         if self.shiny.to_lowercase() == "yes" {
-            writeln!(
-                f,
-                "Shiny: Yes"
-            )?;
+            writeln!(f, "Shiny: Yes")?;
         }
         write!(
             f,
-            "Tera Type: {}\nEVs: {}\n{} Nature\nIVs: {}\nMoves:\n",
+            "Tera Type: {}\n{}{} Nature\n{}Moves:\n",
             self.tera,
             self.evs,
             self.nature,
@@ -57,16 +54,23 @@ impl fmt::Display for Pokemon {
 // training values
 #[derive(Debug, Default, Clone)]
 pub struct Tv {
-    pub hp: String,
-    pub atk: String,
-    pub def: String,
-    pub spa: String,
-    pub spd: String,
-    pub spe: String,
+    pub ifiv:   bool,
+    pub hp:     String,
+    pub atk:    String,
+    pub def:    String,
+    pub spa:    String,
+    pub spd:    String,
+    pub spe:    String,
 }
 
 impl fmt::Display for Tv {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        if self.ifiv {
+            write!(f, "{}", printtvs(self, "31"))
+        } else {
+            write!(f, "{}", printtvs(self, "0"))
+        }
+        /*
         write!(
             f,
             "{} HP / {} Atk / {} Def / {} SpA / {} SpD / {} Spe",
@@ -77,8 +81,65 @@ impl fmt::Display for Tv {
             self.spd,
             self.spe,
         )
+        */
     }
 }
+
+use std::fmt::Write;
+
+// yeah idk this is just the way im gonna try it
+fn printtvs(ivs: &Tv, cmp: &str) -> String {
+    let mut text = String::new();
+    let mut v: Vec<String> = Vec::new();
+
+    if ivs.hp != cmp {
+        v.push(format!("HP {}", ivs.hp));
+    }
+
+    if ivs.atk != cmp {
+        v.push(format!("Atk {}", ivs.atk));
+    }
+    
+    if ivs.def != cmp {
+        v.push(format!("Def {}", ivs.def));
+    }
+    
+    if ivs.spa != cmp {
+        v.push(format!("SpA {}", ivs.spa));
+    }
+    
+    if ivs.spd != cmp {
+        v.push(format!("SpD {}", ivs.spd));
+    }
+
+    if ivs.spe != cmp {
+        v.push(format!("Spe {}", ivs.spe));
+    }
+
+    for (i, j) in v.iter().enumerate() {
+        write!(&mut text, "{}", j).unwrap();
+        if i != v.len() - 1 && v.len() != 1 {
+            write!(&mut text, " / ").unwrap();
+        }
+    }
+    //println!("{}", &text);
+    if text.is_empty() {
+        text
+    } else {
+        let value = match cmp {
+            "31" => "IVs",
+            "0" => "EVs",
+            _ => "error",
+        };
+        let mut full = String::new();
+        writeln!(&mut full, "{}: {}", value, text).unwrap();
+        full
+    }
+}
+
+//fn printevs(evs: &Tv, f: &mut fmt::Formatter) -> fmt::Result {
+//
+//}
 
 // just gotta watch out for the carriage return
 fn split_into_blocks(text: &str) -> Vec<String> {
@@ -94,7 +155,7 @@ fn split_into_blocks(text: &str) -> Vec<String> {
     }
 }
 
-fn parse_tvs(text: String) -> Tv {
+fn parse_tvs(text: String, ifiv: bool) -> Tv {
     let mut tv = Tv::default();
     let parts: Vec<&str> = text.split(" / ").collect();
     for p in parts {
@@ -110,7 +171,7 @@ fn parse_tvs(text: String) -> Tv {
             _ => {},
         }
     }
-
+    tv.ifiv = ifiv;
     tv
 }
 
@@ -122,31 +183,29 @@ fn parse_pokemon(text: String) -> Pokemon {
         //println!("{}", line);
         // split line via : into pairs
         let parts: Vec<&str> = line.split(": ").collect();
+        let lower = parts[0].to_lowercase();
+        //println!("{}", &lower);
         //println!("{:?}", parts);
         if parts.len() >= 2 {
             //println!(" 2");
-            
-            match parts[0].to_lowercase().as_str() {
+            match lower.as_str() {
                 "ability" => pokemon.ability = parts[1].trim().into(),
                 "level" => pokemon.level = parts[1].trim().into(),
                 "tera type" => pokemon.tera = parts[1].trim().into(),
                 "shiny" => pokemon.shiny = parts[1].trim().into(),
-                "evs" => pokemon.evs = parse_tvs(parts[1].trim().into()),
-                "ivs" => pokemon.ivs = parse_tvs(parts[1].trim().into()),
+                "evs" => pokemon.evs = parse_tvs(parts[1].trim().into(), false),
+                "ivs" => pokemon.ivs = parse_tvs(parts[1].trim().into(), true),
                 _ => todo!(),
             }
-
-        } else if parts[0].contains("@") {
+        } else if lower.contains("@") {
             //println!("@ found");
             let l: Vec<&str> = parts[0].split("@").collect();
             pokemon.name = l[0].trim().into();
             pokemon.item = l[1].trim().into();
-            
-        } else if parts[0].contains("nature") {
-            let nature: Vec<&str> = parts[0].split(" nature").collect();
+        } else if lower.contains("nature") {
+            let nature: Vec<&str> = lower.split(" nature").collect();
             //println!("nature: {}", nature[0]);
-            pokemon.nature = nature[0].trim().into();
-        
+            pokemon.nature = capitalize_first_letter(nature[0].trim());
         } else if parts[0].starts_with("-") {
             //println!("move");
             pokemon.moves.push(parts[0][1..].trim().into());
@@ -174,6 +233,17 @@ pub fn parse_pokepaste(paste: String) -> Vec<Pokemon>{
     // remove bad blocks?
 
     vec_pokemon
+}
+
+// stupid helper
+fn capitalize_first_letter(s: &str) -> String {
+    let mut chars = s.chars();
+    match chars.next() {
+        None => String::new(), // Handle empty string
+        Some(first_char) => {
+            first_char.to_uppercase().collect::<String>() + chars.as_str()
+        }
+    }
 }
 
 

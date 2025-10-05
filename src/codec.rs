@@ -70,9 +70,9 @@ pub fn pokebin_to_string(tables: &Tables, pbin: &PokemonBin) -> Pokemon {
         level:      pbin.level.clone().to_string(),
         shiny:      if pbin.shiny { "Yes".into() } else { "".into() }, // bruh
         tera:       binary_to_element(&tables.teras, pbin.tera.clone().into()),
-        evs:        decode_tvs(pbin.evs.clone().into()),
+        evs:        decode_tvs(pbin.evs.clone().into(), false),
         nature:     binary_to_element(&tables.natures, pbin.nature.clone().into()),
-        ivs:        decode_tvs(pbin.ivs.clone().into()),
+        ivs:        decode_tvs(pbin.ivs.clone().into(), true),
         moves:      decode_moves(&tables.moves, pbin.moves.clone().into()),
     }
 }
@@ -85,8 +85,9 @@ fn decode_moves(table: &Vec<String>, moves_bin: Vec<u16>) -> Vec<String> {
     moves
 }
 
-fn decode_tvs(tvs: TvBin) -> Tv {
+fn decode_tvs(tvs: TvBin, ifiv: bool) -> Tv {
     Tv {
+        ifiv,
         hp:     tvs.hp.to_string(),
         atk:    tvs.atk.to_string(),
         def:    tvs.def.to_string(),

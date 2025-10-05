@@ -76,7 +76,7 @@ Modest Nature
 - Trick  
 ```
 
-It's a text based format, UTF-8 or ASCII encoded? (not sure), super simle to share via websites like pokepast.es and pokebin.com. I even wrote a somewhat popular [web extension](https://chromewebstore.google.com/detail/pokepastefix/ekceaboabpgkgbpigacngnjagcdhdkmn) to fix the missing images on the currently unmaintaned pokepast.es site.
+It's a text based format, UTF-8 or ASCII encoded? (not sure), super simple to share via websites like pokepast.es and pokebin.com. I even wrote a somewhat popular [web extension](https://chromewebstore.google.com/detail/pokepastefix/ekceaboabpgkgbpigacngnjagcdhdkmn) to fix the missing images on the currently unmaintaned pokepast.es site.
 
 So, I was thinking, what if you could compress the informatiom in the pokepaste and make it smaller? Let's break down what information a paste contains.
 
@@ -191,6 +191,8 @@ Next, I ask an AI to vibe code me a pure js/css frontend and I'll build the app 
 
 Now I need to figure out what other parts of the library need to be refactored or improved.
 
+I had to spend some time fixing nature parsing, it wasn't working due to the case sensitive nature of the Dex. I'm not sure how to tackle this issue, the dex needs to stay case sensitive, because different entities, names, items, etc have specific capitalization.
+
 ### Current Output
 Used a new shorter paste as testcase.
 ```
@@ -233,14 +235,14 @@ Impish Nature
 
 Building Pok??dex for the first time...
 Raw Bytes:
-[162, 113, 81, 35, 101, 8, 39, 224, 0, 0, 7, 224, 63, 255, 255, 255, 126, 153, 198, 16, 184]
-[159, 209, 91, 28, 100, 0, 32, 0, 7, 224, 7, 224, 62, 15, 255, 255, 150, 208, 147, 25, 31]
-[159, 176, 129, 28, 101, 31, 224, 36, 32, 3, 96, 96, 63, 255, 255, 255, 101, 218, 66, 85, 238]
+[162, 113, 81, 35, 101, 8, 39, 224, 0, 0, 7, 229, 191, 255, 255, 255, 126, 153, 198, 16, 184]
+[159, 209, 91, 28, 100, 0, 32, 0, 7, 224, 7, 230, 62, 15, 255, 255, 150, 208, 147, 25, 31]
+[159, 176, 129, 28, 101, 31, 224, 36, 32, 3, 96, 98, 191, 255, 255, 255, 101, 218, 66, 85, 238]
 
 Hex:
-A2715123650827E0000007E03FFFFFFF7E99C610B8
-9FD15B1C6400200007E007E03E0FFFFF96D093191F
-9FB0811C651FE024200360603FFFFFFF65DA4255EE
+A2715123650827E0000007E5BFFFFFFF7E99C610B8
+9FD15B1C6400200007E007E63E0FFFFF96D093191F
+9FB0811C651FE02420036062BFFFFFFF65DA4255EE
 
 Hex Conversion:
 Koraidon @ Life Orb
@@ -248,9 +250,8 @@ Ability: Orichalcum Pulse
 Level: 50
 Shiny: Yes
 Tera Type: Fire
-EVs: 4 HP / 252 Atk / 0 Def / 0 SpA / 0 SpD / 252 Spe
-Bashful Nature
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: HP 4 / Atk 252 / Spe 252
+Jolly Nature
 Moves:
 - Flame Charge
 - Flare Blitz
@@ -262,9 +263,9 @@ Flutter Mane @ Focus Sash
 Ability: Protosynthesis
 Level: 50
 Tera Type: Normal
-EVs: 4 HP / 0 Atk / 0 Def / 252 SpA / 0 SpD / 252 Spe
-Bashful Nature
-IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: HP 4 / SpA 252 / Spe 252
+Timid Nature
+IVs: Atk 0
 Moves:
 - Moonblast
 - Shadow Ball
@@ -277,18 +278,17 @@ Ability: Protosynthesis
 Level: 50
 Shiny: Yes
 Tera Type: Water
-EVs: 252 HP / 4 Atk / 132 Def / 0 SpA / 108 SpD / 12 Spe
-Bashful Nature
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: HP 252 / Atk 4 / Def 132 / SpD 108 / Spe 12
+Impish Nature
 Moves:
 - Sucker Punch
 - Seed Bomb
 - Spore
 - Rage Powder
 Base64:
-onFRI2UIJ+AAAAfgP////36ZxhC4
-n9FbHGQAIAAH4AfgPg///5bQkxkf
-n7CBHGUf4CQgA2BgP////2XaQlXu
+onFRI2UIJ+AAAAflv////36ZxhC4
+n9FbHGQAIAAH4AfmPg///5bQkxkf
+n7CBHGUf4CQgA2Biv////2XaQlXu
 
 Base64 Conversion:
 Koraidon @ Life Orb
@@ -296,9 +296,8 @@ Ability: Orichalcum Pulse
 Level: 50
 Shiny: Yes
 Tera Type: Fire
-EVs: 4 HP / 252 Atk / 0 Def / 0 SpA / 0 SpD / 252 Spe
-Bashful Nature
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: HP 4 / Atk 252 / Spe 252
+Jolly Nature
 Moves:
 - Flame Charge
 - Flare Blitz
@@ -310,9 +309,9 @@ Flutter Mane @ Focus Sash
 Ability: Protosynthesis
 Level: 50
 Tera Type: Normal
-EVs: 4 HP / 0 Atk / 0 Def / 252 SpA / 0 SpD / 252 Spe
-Bashful Nature
-IVs: 31 HP / 0 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: HP 4 / SpA 252 / Spe 252
+Timid Nature
+IVs: Atk 0
 Moves:
 - Moonblast
 - Shadow Ball
@@ -325,9 +324,8 @@ Ability: Protosynthesis
 Level: 50
 Shiny: Yes
 Tera Type: Water
-EVs: 252 HP / 4 Atk / 132 Def / 0 SpA / 108 SpD / 12 Spe
-Bashful Nature
-IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
+EVs: HP 252 / Atk 4 / Def 132 / SpD 108 / Spe 12
+Impish Nature
 Moves:
 - Sucker Punch
 - Seed Bomb
