@@ -13,9 +13,10 @@ use crate::{
 };
 
 // standard function, returns usize
-// cast to the correct size in PokemonBin
+// cast to the correct u-int size in PokemonBin
 fn element_to_binary(map: &HashMap<String, usize>, element: String) -> usize {
-    match map.get(&element) {
+    // we convert to lowercase because that is how we built our hashmap
+    match map.get(&element.to_lowercase()) {
         Some(i) => *i,
         None => 0,
     }

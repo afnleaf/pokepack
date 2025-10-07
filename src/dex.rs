@@ -100,11 +100,12 @@ fn build_maps(tables: &Tables) -> Maps {
         teras:      build_map(&tables.teras), 
     }
 }
-            
+
+// convert to lowercase to make the input text able to be case insensitive
 fn build_map(table: &Vec<String>) -> HashMap<String, usize> {
     let mut map: HashMap<String, usize>= HashMap::new();
     for (i, t) in table.iter().enumerate() {
-        map.insert(t.clone(), i);
+        map.insert(t.to_lowercase(), i);
     }
     map
 }

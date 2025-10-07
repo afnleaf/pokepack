@@ -9,7 +9,7 @@ fn main() {
 }
 
 fn tests() {
-    let testpaste: &str = include_str!("../paste2.txt");
+    let testpaste: &str = include_str!("../edge_case.txt");
     println!("{}", &testpaste);
 
     let output_bytes = pokepack::pokepaste_to_pokepack(testpaste.into());
@@ -18,16 +18,17 @@ fn tests() {
         println!("{:?}", a);
     }
     println!();
-
-    let output_hex = pokepack::pokepaste_to_hex(testpaste.into());
-    println!("Hex:\n{}", &output_hex);
-    let h = pokepack::hex_to_pokepaste(output_hex).unwrap();
-    println!("Hex Conversion:\n{}", &h);
+    
+    // skip rn
+    //let output_hex = pokepack::pokepaste_to_hex(testpaste.into());
+    //println!("Hex:\n{}", &output_hex);
+    //let h = pokepack::hex_to_pokepaste(output_hex).unwrap();
+    //println!("Hex Conversion:\n{}", &h);
 
     let output_b64 = pokepack::pokepaste_to_base64(testpaste.into());
     println!("Base64:\n{}", &output_b64);
     let s = pokepack::base64_to_pokepaste(output_b64).unwrap();
-    println!("Base64 Conversion:\n{}", &s);
+    println!("Base64 Conversion:\n\n{}", &s);
 }
 
 //use pokepack::{

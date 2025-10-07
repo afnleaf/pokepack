@@ -193,6 +193,46 @@ Now I need to figure out what other parts of the library need to be refactored o
 
 I had to spend some time fixing nature parsing, it wasn't working due to the case sensitive nature of the Dex. I'm not sure how to tackle this issue, the dex needs to stay case sensitive, because different entities, names, items, etc have specific capitalization.
 
+So by now I've realized that we require a default empty input to be possible for items, . This requires us
+
+For example:
+```
+Arceus
+Ability: Multitype
+Level: 50
+Tera Type: Normal
+
+
+Building Pokédex for the first time...
+Raw Bytes:
+[79, 48, 0, 124, 100, 0, 0, 0, 0, 0, 0, 0, 63, 255, 255, 255, 0, 0, 0, 0, 0]
+
+Base64:
+TzAAfGQAAAAAAAAAP////wAAAAAA
+
+Base64 Conversion:
+Arceus @ Vile Vial
+Ability: Multitype
+Level: 50
+Tera Type: Normal
+Bashful Nature
+Moves:
+- Polar Flare
+- Polar Flare
+- Polar Flare
+- Polar Flare
+```
+
+You see how a 0 result defaults to the first element in a dex array. We want this to be empty. Luckily this won't impact any of integer sizes and packing. Simply adding a en empty first line to our ground truth .txt files, we get the behavior we want.
+
+Now at this point I have realized that I have to deal with pokemon nicknames. In the newest pokemon games, Scarlet and Violet, there is a 12 character limit. Pokemon showdown's teambuilder and pokepast.es technically allow for unlimited characters. However, showdown will not let you battle if a pokemon has a nickname over 18 characters. Now those are constraints I can deal with, but are they in the spirit of the tool? Probably. If I consider ASCII encoding (utf-8 variable would be an issue) at 7bits x18 = 126 + 168 = 294, that's so heavy. This will be a feature I will have to consider adding later. 
+
+Might just make sense to do something such as this:
+```
+(pokemon nickname) onFRI2UIJ+AAAAflv////36ZxhC4
+```
+Utilize the fact that the main output for the bytes will not be raw but as Base64/Hex
+
 ### Current Output
 Used a new shorter paste as testcase.
 ```

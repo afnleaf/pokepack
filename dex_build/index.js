@@ -7,6 +7,41 @@
 import { strict as assert } from 'node:assert';
 import {Dex} from '@pkmn/dex';
 
+const allTypes = Dex.forGen(9).types.all();
+//let asd = JSON.stringify(allTypes, null, 2)
+//console.log(asd);
+
+// so I take all the types, go through each one for attack
+const n = allTypes.length;
+for(let i = 0; i < n; i++) {
+    let attackType = allTypes[i];
+    //console.log(attackType.name);
+    // then I take the same loop just for defense
+    for(let j = 0; j < n; j++) {
+        let defenseType = allTypes[j];
+        let d = defenseType.name;
+        if (defenseType.damageTaken.hasOwnProperty(attackType.name)) {
+            console.log(`
+                attack: ${attackType.name} 
+                defense: ${defenseType.name}
+                effect: ${defenseType.damageTaken[d]}
+            `);
+            console.log(defenseType.damageTaken);
+        }
+    }
+}
+
+
+
+
+
+function printType(type) {
+    console.log(`
+        ${type.name}
+    `);
+    console.log(type.damageTaken);
+}
+
 //const allPokemon = Dex.forGen(9).species.all();
 //// c for loop cause its easier for me conceptually
 //for(let i = 0; i < allPokemon.length; i++) {
@@ -32,17 +67,13 @@ import {Dex} from '@pkmn/dex';
 //}
 //console.log(`Abilities: ${allAbilities.length}`);
 
-const allMoves = Dex.forGen(9).moves.all();
-allMoves.sort((a, b) => a.num - b.num);
-for(let i = 0; i < allMoves.length; i++) {
-    let move = allMoves[i];
-    console.log(move.name);
-}
+//const allMoves = Dex.forGen(9).moves.all();
+//allMoves.sort((a, b) => a.num - b.num);
+//for(let i = 0; i < allMoves.length; i++) {
+//    let move = allMoves[i];
+//    console.log(move.name);
+//}
 //console.log(`Moves: ${allMoves.length}`);
-
-
-
-
 
 //console.log("test");
 //assert(Dex.forGen(1).types.get('Psychic').damageTaken['Ghost'] === 3);

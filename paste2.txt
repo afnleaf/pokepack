@@ -1,11 +1,17 @@
-Koraidon @ Life Orb  
-Ability: Orichalcum Pulse  
+Arceus  
+Ability: Multitype  
 Level: 50  
+Tera Type: Normal  
+
+koraidon @  
+ability: Orichalcum pulse  
+Level: 50 
+Notwork: 12
 Shiny: Yes  
 Tera Type: Fire  
 EVs: 4 HP / 252 Atk / 252 Spe  
-Jolly Nature  
-- Flame Charge  
+jOlly Nature  
+- fLame Charge  
 - Flare Blitz  
 - Close Combat  
 - Protect  
