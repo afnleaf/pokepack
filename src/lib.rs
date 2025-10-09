@@ -6,6 +6,7 @@ pub mod dex;
 pub mod parser;
 pub mod binary;
 pub mod codec;
+pub mod error;
 
 use crate::dex::Dex;
 use crate::parser::Pokemon;
@@ -46,7 +47,7 @@ pub fn start() {
 pub fn pokepaste_to_pokepack(pokepaste: String) -> Vec<[u8; 21]> {
     let dex = get_dex();
     // parse pokepaste into pokemon string struct
-    let pokemon_strings: Vec<Pokemon> = parser::parse_pokepaste(pokepaste);
+    let pokemon_strings: Vec<Pokemon> = parser::parse_pokepaste(pokepaste).unwrap();
     // convert string to unpacked binary struct
     let pokemon_bin: Vec<PokemonBin> = 
         codec::encode_all_pokemon(&dex.maps, pokemon_strings);

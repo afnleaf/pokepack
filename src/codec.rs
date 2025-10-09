@@ -14,7 +14,7 @@ use crate::{
 
 // standard function, returns usize
 // cast to the correct u-int size in PokemonBin
-fn element_to_binary(map: &HashMap<String, usize>, element: String) -> usize {
+fn element_to_binary(map: &HashMap<String, usize>, element: &str) -> usize {
     // we convert to lowercase because that is how we built our hashmap
     match map.get(&element.to_lowercase()) {
         Some(i) => *i,
@@ -113,22 +113,22 @@ fn encode_tvs(tvs: Tv, ifiv: bool) -> TvBin {
 fn encode_moves(moves_map: &HashMap<String, usize>, moves: &Vec<String>) -> Vec<u16> {
     moves
         .iter()
-        .map(|m| element_to_binary(moves_map, m.into()) as u16)
+        .map(|m| element_to_binary(moves_map, m) as u16)
         .collect()
 }
 
 //fn encoded_pokemon(tables: &Tables, pokemon: &Pokemon) -> PokemonBin {
 pub fn encoded_pokemon(maps: &Maps, pokemon: &Pokemon) -> PokemonBin {
     PokemonBin {
-        name:       element_to_binary(&maps.names, pokemon.name.clone()) as u16,
+        name:       element_to_binary(&maps.names, &pokemon.name) as u16,
         gender:     gender_to_binary(pokemon.gender.clone()) as u8,
-        item:       element_to_binary(&maps.items, pokemon.item.clone()) as u16,
-        ability:    element_to_binary(&maps.abilities, pokemon.ability.clone()) as u16,
+        item:       element_to_binary(&maps.items, &pokemon.item) as u16,
+        ability:    element_to_binary(&maps.abilities, &pokemon.ability) as u16,
         level:      small_to_u8(pokemon.level.clone(), false) as u8,
         shiny:      pokemon.shiny.to_lowercase() == "yes", // placeholder
-        tera:       element_to_binary(&maps.teras, pokemon.tera.clone()) as u8,
+        tera:       element_to_binary(&maps.teras, &pokemon.tera) as u8,
         evs:        encode_tvs(pokemon.evs.clone(), false),
-        nature:     element_to_binary(&maps.natures, pokemon.nature.clone()) as u8,
+        nature:     element_to_binary(&maps.natures, &pokemon.nature) as u8,
         ivs:        encode_tvs(pokemon.ivs.clone(), true),
         moves:      encode_moves(&maps.moves, &pokemon.moves),
     }

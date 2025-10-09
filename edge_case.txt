@@ -3,4 +3,13 @@ Ability: Flame Body
 Level: 50  
 Shiny: Yes  
 Tera Type: Bug  
+EVs: 4 HP / 252 Atk / 252 Spe  
+- fiery dance
+- rage powder
 
+Brute Bonnet
+Ability: Protosynthesis
+Level: 50  
+Shiny: Yes  
+Tera Type: Bug  
+EVs: 4 HP / 252 Atk / 252 Spe  
