@@ -20,7 +20,7 @@ use crate::error::ParseError;
 // our pokemon information struct 
 // makes it easier to convert to the intermediate binary format
 // easier to print out
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct Pokemon {
     pub name: String,
     pub gender: String,
@@ -48,13 +48,13 @@ impl fmt::Display for Pokemon {
         }
         // ITEM
         if !self.item.is_empty() {
-            write!(f, ": {}", self.item)?;
+            write!(f, " @ {}\n", self.item)?;
         } else {
             write!(f, "\n")?;
         }
         // ABILITY
         if !self.ability.is_empty() {
-            writeln!(f, "{}", self.ability)?;
+            writeln!(f, "Ability: {}", self.ability)?;
         }
         // LEVEL
         if !self.level.is_empty() {
@@ -90,7 +90,7 @@ impl fmt::Display for Pokemon {
 
 // training values
 // needs ifiv
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct Tv {
     pub ifiv:   bool,
     pub hp:     String,
@@ -120,12 +120,12 @@ fn printtvs(f: &mut fmt::Formatter, ivs: &Tv, cmp: &str) -> fmt::Result {
     //let mut text = String::new();
     let mut v: Vec<String> = Vec::new();
 
-    if ivs.hp   != cmp { v.push(format!("HP {}", ivs.hp)); }
-    if ivs.atk  != cmp { v.push(format!("Atk {}", ivs.atk)); }
-    if ivs.def  != cmp { v.push(format!("Def {}", ivs.def)); }
-    if ivs.spa  != cmp { v.push(format!("SpA {}", ivs.spa)); }
-    if ivs.spd  != cmp { v.push(format!("SpD {}", ivs.spd)); }
-    if ivs.spe  != cmp { v.push(format!("Spe {}", ivs.spe)); }
+    if ivs.hp   != cmp { v.push(format!("{} HP", ivs.hp)); }
+    if ivs.atk  != cmp { v.push(format!("{} Atk", ivs.atk)); }
+    if ivs.def  != cmp { v.push(format!("{} Def", ivs.def)); }
+    if ivs.spa  != cmp { v.push(format!("{} SpA", ivs.spa)); }
+    if ivs.spd  != cmp { v.push(format!("{} SpD", ivs.spd)); }
+    if ivs.spe  != cmp { v.push(format!("{} Spe", ivs.spe)); }
 
     if v.is_empty() {
         return Ok(());
@@ -260,7 +260,7 @@ fn parse_pokemon(text: String) -> Result<Pokemon, ParseError> {
 
     // we set default name as full field
     // this handles NAME (GENDER) @ ITEM fully
-    let mut name: String = header.to_string();
+    let mut name: String = header.to_lowercase().to_string();
     let mut gender = String::new();
     let mut item = String::new();
     
@@ -374,3 +374,83 @@ fn parse_tvs(text: String, ifiv: bool) -> Result<Tv, ParseError> {
     Ok(tv)
 }
 
+    
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_full_pokemon() {
+        let paste = r#"
+Glimmora @ Focus Sash
+Ability: Toxic Debris
+Level: 50
+Shiny: Yes
+Tera Type: Grass
+EVs: 4 Def / 252 SpA / 252 Spe
+Timid Nature
+IVs: 0 Atk
+- Mortal Spin
+- Power Gem
+"#;
+        let result = parse_pokemon(paste.to_string()).unwrap();
+
+        assert_eq!(result.name, "glimmora");
+        assert_eq!(result.item, "focus sash");
+        assert_eq!(result.ability, "Toxic Debris");
+        assert_eq!(result.level, "50");
+        assert_eq!(result.shiny, "Yes");
+        assert_eq!(result.tera, "Grass");
+        assert_eq!(result.nature, "timid");
+        assert_eq!(result.moves, vec!["Mortal Spin", "Power Gem"]);
+        assert_eq!(result.evs.spa, "252");
+        assert_eq!(result.ivs.atk, "0");
+    }
+    
+    #[test]
+    fn test_parse_nickname_and_gender() {
+        // Arrange: The correct format is Nickname (Species)
+        let paste = "Chompy (Garchomp) (M) @ Life Orb";
+        
+        // Act
+        let result = parse_pokemon(paste.to_string()).unwrap();
+
+        // Assert
+        assert_eq!(result.name, "garchomp");
+        assert_eq!(result.gender, "m");
+        assert_eq!(result.item, "life orb");
+    }
+    
+    #[test]
+    fn test_minimal_pokemon() {
+        let paste = "Pikachu";
+        let result = parse_pokemon(paste.to_string()).unwrap();
+        assert_eq!(result.name, "pikachu");
+        assert!(result.item.is_empty());
+        assert!(result.ability.is_empty());
+    }
+    
+    #[test]
+    fn test_error_on_missing_name() {
+        let paste = "Ability: Intimidate";
+        let result = parse_pokemon(paste.to_string());
+        assert!(result.is_err());
+        assert!(matches!(result.unwrap_err(), ParseError::MissingName { .. }));
+    }
+    
+    #[test]
+    fn test_gracefully_handles_malformed_ev_string() {
+        // Arrange: Test that a partially malformed EV string is handled gracefully,
+        // as per the parser's robust design.
+        let paste = "Snorlax\nEVs: 252 HP / Atk 252";
+        
+        // Act
+        let result = parse_pokemon(paste.to_string()).unwrap();
+
+        // Assert: The valid part "252 HP" is parsed, the invalid part "Atk 252" is ignored.
+        assert_eq!(result.evs.hp, "252");
+        assert_eq!(result.evs.atk, "");
+    }
+}
+
+  

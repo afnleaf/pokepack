@@ -1,7 +1,10 @@
-John (Volcarona) (M)  
+Snorlax
+EVs: 252 HP / Atk 252"
+
+John (Volcarona) (M) @ Life Orb
 Ability: Flame Body  
 Level: 50  
-Shiny: Yes  
+Shiny: No  
 Tera Type: Bug  
 EVs: 4 HP / 252 Atk / 252 Spe  
 - fiery dance

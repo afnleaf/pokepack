@@ -1,0 +1,47 @@
+Iron Hands @ Assault Vest  
+Ability: Quark Drive  
+Level: 50  
+Shiny: Yes  
+Tera Type: Poison  
+EVs: 212 HP / 156 Atk / 4 Def / 124 SpD / 12 Spe  
+Adamant Nature  
+- Low Kick  
+- Wild Charge  
+- Heavy Slam  
+- Fake Out  
+
+Volcarona (M) @ Leftovers  
+Ability: Flame Body  
+Level: 50  
+Shiny: Yes  
+Tera Type: Water  
+EVs: 252 HP / 252 Def / 4 SpA  
+Bold Nature  
+IVs: 0 Atk  
+- Fiery Dance  
+- Rage Powder  
+- Struggle Bug  
+- Tailwind  
+
+Urshifu-Rapid-Strike @ Focus Sash  
+Ability: Unseen Fist  
+Level: 50  
+Tera Type: Ghost  
+EVs: 4 HP / 252 Atk / 252 Spe  
+Adamant Nature  
+- Surging Strikes  
+- Close Combat  
+- Taunt  
+- Protect  
+
+Ogerpon-Cornerstone (F) @ Cornerstone Mask  
+Ability: Sturdy  
+Level: 50  
+Tera Type: Rock  
+EVs: 4 HP / 252 Atk / 252 Spe  
+Jolly Nature  
+- Ivy Cudgel  
+- Stomping Tantrum  
+- Follow Me  
+- Spiky Shield  
+

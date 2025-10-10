@@ -18,37 +18,37 @@ fn element_to_binary(map: &HashMap<String, usize>, element: &str) -> usize {
     // we convert to lowercase because that is how we built our hashmap
     match map.get(&element.to_lowercase()) {
         Some(i) => *i,
-        None => 0,
+        None    => 0,
     }
-
 }
 
-// our chill n(1) lookup?
+// our chill o(1) lookup?
+// clone is fine
 fn binary_to_element(table: &Vec<String>, index: usize) -> String {
     table[index].clone()
 }
 
-fn gender_to_binary(gender: String) -> u8 {
+fn gender_to_binary(gender: &str) -> u8 {
     // make sure it is lowercase for comparison
     // male, female or genderless
     match gender.to_lowercase().as_str() {
         "m" => 0,
         "f" => 1,
-        _ => 2,
+        _   => 2,
     }
 }
 
 fn binary_to_gender(gender: u8) -> String {
     match gender {
-        0 => "m".into(),
-        1 => "f".into(),
-        _ => "".into(),
+        0 => "m".to_string(),
+        1 => "f".to_string(),
+        _ => "".to_string(),
     }
 }
 
 // need to check if IV so that it defaults to 31 "perfect"
 // which is the intended behavior
-fn small_to_u8(s: String, ifiv: bool) -> u8 {
+fn small_to_u8(s: &str, ifiv: bool) -> u8 {
     //println!("test level -{}-", level);
     if s == "" {
         if ifiv {
@@ -57,36 +57,37 @@ fn small_to_u8(s: String, ifiv: bool) -> u8 {
             0
         }
     } else {
+        // not sure if this is the error behavior we want
         s.trim().parse::<u8>().unwrap_or(0)  
     }
 }
 
-
+// we use the .into() to convert to usize
 pub fn pokebin_to_string(tables: &Tables, pbin: &PokemonBin) -> Pokemon {
     Pokemon {
-        name:       binary_to_element(&tables.names, pbin.name.clone().into()),
-        gender:     binary_to_gender(pbin.gender.clone().into()),
-        item:       binary_to_element(&tables.items, pbin.item.clone().into()),
-        ability:    binary_to_element(&tables.abilities, pbin.ability.clone().into()),
-        level:      pbin.level.clone().to_string(),
-        shiny:      if pbin.shiny { "Yes".into() } else { "".into() }, // bruh
-        tera:       binary_to_element(&tables.teras, pbin.tera.clone().into()),
-        evs:        decode_tvs(pbin.evs.clone().into(), false),
-        nature:     binary_to_element(&tables.natures, pbin.nature.clone().into()),
-        ivs:        decode_tvs(pbin.ivs.clone().into(), true),
-        moves:      decode_moves(&tables.moves, pbin.moves.clone().into()),
+        name:       binary_to_element(&tables.names, pbin.name.into()),
+        gender:     binary_to_gender(pbin.gender.into()),
+        item:       binary_to_element(&tables.items, pbin.item.into()),
+        ability:    binary_to_element(&tables.abilities, pbin.ability.into()),
+        level:      if pbin.level == 0 {"".into()} else {pbin.level.to_string()},
+        shiny:      if pbin.shiny { "Yes".to_string() } else { "".to_string() },
+        tera:       binary_to_element(&tables.teras, pbin.tera.into()),
+        evs:        decode_tvs(&pbin.evs, false),
+        nature:     binary_to_element(&tables.natures, pbin.nature.into()),
+        ivs:        decode_tvs(&pbin.ivs, true),
+        moves:      decode_moves(&tables.moves, &pbin.moves),
     }
 }
 
-fn decode_moves(table: &Vec<String>, moves_bin: Vec<u16>) -> Vec<String> {
+fn decode_moves(table: &Vec<String>, moves_bin: &Vec<u16>) -> Vec<String> {
     let mut moves: Vec<String> = Vec::new();
     for m in moves_bin {
-        moves.push(binary_to_element(table, m.into()));
+        moves.push(binary_to_element(table, (*m).into()));
     }
     moves
 }
 
-fn decode_tvs(tvs: TvBin, ifiv: bool) -> Tv {
+fn decode_tvs(tvs: &TvBin, ifiv: bool) -> Tv {
     Tv {
         ifiv,
         hp:     tvs.hp.to_string(),
@@ -98,38 +99,39 @@ fn decode_tvs(tvs: TvBin, ifiv: bool) -> Tv {
     }
 } 
 
-fn encode_tvs(tvs: Tv, ifiv: bool) -> TvBin {
+fn encode_tvs(tvs: &Tv, ifiv: bool) -> TvBin {
     TvBin {
-        hp:     small_to_u8(tvs.hp, ifiv),
-        atk:    small_to_u8(tvs.atk, ifiv),
-        def:    small_to_u8(tvs.def, ifiv),
-        spa:    small_to_u8(tvs.spa, ifiv),
-        spd:    small_to_u8(tvs.spd, ifiv),
-        spe:    small_to_u8(tvs.spe, ifiv),
+        hp:     small_to_u8(&tvs.hp, ifiv),
+        atk:    small_to_u8(&tvs.atk, ifiv),
+        def:    small_to_u8(&tvs.def, ifiv),
+        spa:    small_to_u8(&tvs.spa, ifiv),
+        spd:    small_to_u8(&tvs.spd, ifiv),
+        spe:    small_to_u8(&tvs.spe, ifiv),
     }
 }
 
-//fn encode_moves(movetable: &Vec<String>, moves: &Vec<String>) -> Vec<u16> {
-fn encode_moves(moves_map: &HashMap<String, usize>, moves: &Vec<String>) -> Vec<u16> {
+fn encode_moves(
+    moves_map: &HashMap<String, usize>, 
+    moves: &Vec<String>
+) -> Vec<u16> {
     moves
         .iter()
         .map(|m| element_to_binary(moves_map, m) as u16)
         .collect()
 }
 
-//fn encoded_pokemon(tables: &Tables, pokemon: &Pokemon) -> PokemonBin {
 pub fn encoded_pokemon(maps: &Maps, pokemon: &Pokemon) -> PokemonBin {
     PokemonBin {
         name:       element_to_binary(&maps.names, &pokemon.name) as u16,
-        gender:     gender_to_binary(pokemon.gender.clone()) as u8,
+        gender:     gender_to_binary(&pokemon.gender) as u8,
         item:       element_to_binary(&maps.items, &pokemon.item) as u16,
         ability:    element_to_binary(&maps.abilities, &pokemon.ability) as u16,
-        level:      small_to_u8(pokemon.level.clone(), false) as u8,
-        shiny:      pokemon.shiny.to_lowercase() == "yes", // placeholder
+        level:      small_to_u8(&pokemon.level, false) as u8,
+        shiny:      pokemon.shiny.to_lowercase() == "yes",
         tera:       element_to_binary(&maps.teras, &pokemon.tera) as u8,
-        evs:        encode_tvs(pokemon.evs.clone(), false),
+        evs:        encode_tvs(&pokemon.evs, false),
         nature:     element_to_binary(&maps.natures, &pokemon.nature) as u8,
-        ivs:        encode_tvs(pokemon.ivs.clone(), true),
+        ivs:        encode_tvs(&pokemon.ivs, true),
         moves:      encode_moves(&maps.moves, &pokemon.moves),
     }
 }
@@ -143,5 +145,4 @@ pub fn encode_all_pokemon(
             .map(|p| encoded_pokemon(&maps, p))
             .collect()
 }
-
 

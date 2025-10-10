@@ -7,7 +7,7 @@
 use std::fmt;
 
 // see if we add this up without bit packing -> 241 bits?
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct PokemonBin {
     pub name:       u16,
     pub gender:     u8,
@@ -46,7 +46,7 @@ impl fmt::Display for PokemonBin {
 }
 
 // training values either 0-31 or 0-255
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct TvBin {
     pub hp:     u8, 
     pub atk:    u8,
@@ -207,3 +207,65 @@ pub fn unpack_from_bytes(bytes: &[u8; 21]) -> PokemonBin {
 
     pbin
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn create_sample_pokemon_bin() -> PokemonBin {
+        PokemonBin {
+            name: 151,      // mew :3
+            gender: 2,      // genderless
+            item: 136,      // leftovers
+            ability: 33,    // synchronize
+            level: 100,
+            shiny: true,
+            tera: 10,       // psychic
+            evs: TvBin {
+                hp: 4,
+                atk: 0,
+                def: 252,
+                spa: 0,
+                spd: 252,
+                spe: 0,
+            },
+            nature: 15,      // modest
+            ivs: TvBin {
+                hp: 31,
+                atk: 0,
+                def: 31,
+                spa: 31,
+                spd: 31,
+                spe: 31,
+            },
+            moves: vec![305, 109, 157, 799], // skill swap, recover, explosion, expanding force
+        }
+    }
+
+    #[test]
+    fn test_pack_unpack_roundtrip() {
+        // Arrange: Create a complex, non-default PokemonBin instance.
+        let original_pokemon = create_sample_pokemon_bin();
+
+        // Act: Pack the struct into bytes, then immediately unpack it.
+        let packed_bytes = original_pokemon.pack_to_bytes();
+        let unpacked_pokemon = unpack_from_bytes(&packed_bytes);
+
+        // Assert: The unpacked struct must be identical to the original.
+        // This is why we derived `PartialEq` and `Eq`!
+        assert_eq!(original_pokemon, unpacked_pokemon);
+    }
+    
+    #[test]
+    fn test_pack_with_empty_moves() {
+        let mut original_pokemon = create_sample_pokemon_bin();
+        original_pokemon.moves = vec![10, 20];
+        
+        let packed_bytes = original_pokemon.pack_to_bytes();
+        let unpacked_pokemon = unpack_from_bytes(&packed_bytes);
+        
+        original_pokemon.moves.resize(4, 0);
+        assert_eq!(original_pokemon, unpacked_pokemon);
+    }
+}
+

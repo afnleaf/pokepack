@@ -4,7 +4,6 @@ use std::{
 };
 use regex::Error as RegexError;
 
-
 #[derive(Debug)]
 pub enum ParseError {
     // input string is only whitespace
