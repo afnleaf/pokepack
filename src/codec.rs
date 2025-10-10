@@ -57,7 +57,7 @@ fn small_to_u8(s: String, ifiv: bool) -> u8 {
             0
         }
     } else {
-        s.trim().parse::<u8>().unwrap()  
+        s.trim().parse::<u8>().unwrap_or(0)  
     }
 }
 

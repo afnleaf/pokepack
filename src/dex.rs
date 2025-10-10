@@ -9,12 +9,47 @@
 
 use std::collections::HashMap;
 
-const NAMES: &str = include_str!("../dex/names.txt");
-const ITEMS: &str = include_str!("../dex/items.txt");
-const ABILITIES: &str = include_str!("../dex/abilities.txt");
-const MOVES: &str = include_str!("../dex/moves.txt");
-const NATURES: &str = include_str!("../dex/natures.txt");
-const TERAS: &str = include_str!("../dex/teras.txt");
+// our ground truth for building the dex
+// all elements on a newline, simple to parser
+const NAMES:        &str = include_str!("../dex/names.txt");
+const ITEMS:        &str = include_str!("../dex/items.txt");
+const ABILITIES:    &str = include_str!("../dex/abilities.txt");
+const MOVES:        &str = include_str!("../dex/moves.txt");
+const NATURES:      &str = include_str!("../dex/natures.txt");
+const TERAS:        &str = include_str!("../dex/teras.txt");
+
+/*
+our dex struct contains two data structures
+Tables: containing array/vector types for o(1) decoding
+Maps: containing hashmaps for o(1) encoding
+using the vec for encoding would be o(n) on lookups
+
+illustration:
+
+table:
+[Bulbasaur, Ivysaur, Venusaur, etc]
+    0         1         2       3
+simple index access
+
+map:
+(key, value)
+[(bulbasaur, 0), (ivysaur, 1), (venusaur, 2)]
+the value is what we want to encode in our binary pack
+
+we make the keys lowercase so that they are case insensitive
+we only need the value which is the index of the pokemon
+we keep the Vec<String> the original case
+
+further consideration can be done on nomenclature of Table
+-> Array? Vec? idk
+cause HashMap and HashTable are the same thing, it could be confusing
+*/
+
+#[derive(Debug, Default)]
+pub struct Dex {
+    pub tables: Tables,
+    pub maps: Maps,
+}
 
 #[derive(Debug, Default)]
 pub struct Tables {
@@ -26,6 +61,7 @@ pub struct Tables {
     pub teras:      Vec<String>,
 }
 
+#[derive(Debug, Default)]
 pub struct Maps {
     pub names:      HashMap<String, usize>,
     pub items:      HashMap<String, usize>,
@@ -35,12 +71,7 @@ pub struct Maps {
     pub teras:      HashMap<String, usize>,
 }
 
-
-pub struct Dex {
-    pub tables: Tables,
-    pub maps: Maps,
-}
-
+// the rest of the functions in this module feel self explanatory
 impl Dex {
     pub fn build() -> Self {
         let tables = parse_tables();
@@ -51,17 +82,6 @@ impl Dex {
         }
     }
 }
-
-/*
-pub fn build_dex() -> Dex {
-    let tables = parse_tables();
-    let maps = build_maps(&tables);
-    Dex {
-        tables,
-        maps,
-    }
-}
-*/
 
 fn parse_tables() -> Tables {
     Tables {
@@ -75,15 +95,6 @@ fn parse_tables() -> Tables {
 }
 
 fn parse_table(file: &str) -> Vec<String> {
-    // standard imperative
-    /*
-    let mut result = Vec::new();
-    for line in file.lines() {
-        result.push(line.to_string())
-    }
-    result
-    */
-    //idiomatic rust
     file
         .lines()
         .map(String::from)
@@ -103,11 +114,10 @@ fn build_maps(tables: &Tables) -> Maps {
 
 // convert to lowercase to make the input text able to be case insensitive
 fn build_map(table: &Vec<String>) -> HashMap<String, usize> {
-    let mut map: HashMap<String, usize>= HashMap::new();
-    for (i, t) in table.iter().enumerate() {
-        map.insert(t.to_lowercase(), i);
-    }
-    map
+    table
+        .iter()
+        .enumerate()
+        .map(|(i, t)| (t.to_lowercase(), i))
+        .collect::<HashMap<String, usize>>()
 }
-
 
