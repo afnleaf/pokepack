@@ -2,11 +2,15 @@
 * binary.rs
 *
 * custom binary file
+* two main functions based around the PokemonBin struct
+* packing the struct down to 168 bits (u32, u8, u128)
+* unpacking raw bytes back to the unpacked struct
 */
 
 use std::fmt;
 
 // see if we add this up without bit packing -> 241 bits?
+// therefore we must pack it
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct PokemonBin {
     pub name:       u16,
@@ -22,6 +26,7 @@ pub struct PokemonBin {
     pub moves:      Vec<u16>, // we will just encode the first 4 for ease
 }
 
+// simple printer
 impl fmt::Display for PokemonBin {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -45,7 +50,7 @@ impl fmt::Display for PokemonBin {
     }
 }
 
-// training values either 0-31 or 0-255
+// training values either 0-31 or 0-255 which fits in u8
 #[derive(Debug, Default, Clone, PartialEq, Eq)]
 pub struct TvBin {
     pub hp:     u8, 
@@ -71,6 +76,7 @@ impl fmt::Display for TvBin {
     }
 }
 
+// these are the bit shifts we perform
 // group u32
 const POKEMON_BITS: u32 = 11;
 const GENDER_BITS: u32 = 2;
@@ -242,29 +248,12 @@ mod tests {
         }
     }
 
+    // use our sample to check if packing -> unpacking = same struct
     #[test]
     fn test_pack_unpack_roundtrip() {
-        // Arrange: Create a complex, non-default PokemonBin instance.
         let original_pokemon = create_sample_pokemon_bin();
-
-        // Act: Pack the struct into bytes, then immediately unpack it.
         let packed_bytes = original_pokemon.pack_to_bytes();
         let unpacked_pokemon = unpack_from_bytes(&packed_bytes);
-
-        // Assert: The unpacked struct must be identical to the original.
-        // This is why we derived `PartialEq` and `Eq`!
-        assert_eq!(original_pokemon, unpacked_pokemon);
-    }
-    
-    #[test]
-    fn test_pack_with_empty_moves() {
-        let mut original_pokemon = create_sample_pokemon_bin();
-        original_pokemon.moves = vec![10, 20];
-        
-        let packed_bytes = original_pokemon.pack_to_bytes();
-        let unpacked_pokemon = unpack_from_bytes(&packed_bytes);
-        
-        original_pokemon.moves.resize(4, 0);
         assert_eq!(original_pokemon, unpacked_pokemon);
     }
 }

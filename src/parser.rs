@@ -2,7 +2,6 @@
 * parser.rs
 *
 * logic for parsing the pokepaste text format
-* example found in paste.txt
 */
 
 use std::{
@@ -379,13 +378,16 @@ fn parse_tvs(text: String, ifiv: bool) -> Result<Tv, ParseError> {
 mod tests {
     use super::*;
 
+    // make sure the parser extracts the strings correctly
+    // include nickname and gender
     #[test]
     fn test_parse_full_pokemon() {
         let paste = r#"
-Glimmora @ Focus Sash
+Joe (Glimmora) (M) @ Focus Sash
 Ability: Toxic Debris
 Level: 50
 Shiny: Yes
+Line that does nothing
 Tera Type: Grass
 EVs: 4 Def / 252 SpA / 252 Spe
 Timid Nature
@@ -396,29 +398,18 @@ IVs: 0 Atk
         let result = parse_pokemon(paste.to_string()).unwrap();
 
         assert_eq!(result.name, "glimmora");
+        assert_eq!(result.gender, "m");
         assert_eq!(result.item, "focus sash");
         assert_eq!(result.ability, "Toxic Debris");
         assert_eq!(result.level, "50");
         assert_eq!(result.shiny, "Yes");
         assert_eq!(result.tera, "Grass");
-        assert_eq!(result.nature, "timid");
-        assert_eq!(result.moves, vec!["Mortal Spin", "Power Gem"]);
+        assert_eq!(result.evs.def, "4");
         assert_eq!(result.evs.spa, "252");
+        assert_eq!(result.evs.spe, "252");
+        assert_eq!(result.nature, "timid");
         assert_eq!(result.ivs.atk, "0");
-    }
-    
-    #[test]
-    fn test_parse_nickname_and_gender() {
-        // Arrange: The correct format is Nickname (Species)
-        let paste = "Chompy (Garchomp) (M) @ Life Orb";
-        
-        // Act
-        let result = parse_pokemon(paste.to_string()).unwrap();
-
-        // Assert
-        assert_eq!(result.name, "garchomp");
-        assert_eq!(result.gender, "m");
-        assert_eq!(result.item, "life orb");
+        assert_eq!(result.moves, vec!["Mortal Spin", "Power Gem"]);
     }
     
     #[test]
@@ -437,17 +428,12 @@ IVs: 0 Atk
         assert!(result.is_err());
         assert!(matches!(result.unwrap_err(), ParseError::MissingName { .. }));
     }
-    
+   
+    // atk EV should be ignored here
     #[test]
     fn test_gracefully_handles_malformed_ev_string() {
-        // Arrange: Test that a partially malformed EV string is handled gracefully,
-        // as per the parser's robust design.
         let paste = "Snorlax\nEVs: 252 HP / Atk 252";
-        
-        // Act
         let result = parse_pokemon(paste.to_string()).unwrap();
-
-        // Assert: The valid part "252 HP" is parsed, the invalid part "Atk 252" is ignored.
         assert_eq!(result.evs.hp, "252");
         assert_eq!(result.evs.atk, "");
     }

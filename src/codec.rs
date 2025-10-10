@@ -2,6 +2,7 @@
 * codec.rs
 *
 * logic for converting between paste and binary structs
+* see binary.rs and parser.rs for the struct definitions
 */
 
 use std::collections::HashMap;
@@ -146,3 +147,52 @@ pub fn encode_all_pokemon(
             .collect()
 }
 
+
+// gonna treat these kind of like unit tests
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_element_to_binary() {
+        let dex = crate::get_dex();
+        assert_eq!(element_to_binary(&dex.maps.names, "bulbasaur"), 0);
+    }
+
+    #[test]
+    fn test_binary_to_element() {
+        let dex = crate::get_dex();
+        assert_eq!(binary_to_element(&dex.tables.names, 0), "Bulbasaur");
+    }
+
+    #[test]
+    fn test_gender_to_binary() {
+        assert_eq!(gender_to_binary("m"), 0);
+        assert_eq!(gender_to_binary("f"), 1);
+        assert_eq!(gender_to_binary("a"), 2);
+    }
+
+    #[test]
+    fn test_binary_to_gender() {
+        assert_eq!(binary_to_gender(0), "m");
+        assert_eq!(binary_to_gender(1), "f");
+        assert_eq!(binary_to_gender(2), "");
+    }
+
+/*
+    fn small_to_u8(s: &str, ifiv: bool) -> u8 {
+    pub fn pokebin_to_string(tables: &Tables, pbin: &PokemonBin) -> Pokemon {
+    fn decode_moves(table: &Vec<String>, moves_bin: &Vec<u16>) -> Vec<String> {
+    fn decode_tvs(tvs: &TvBin, ifiv: bool) -> Tv {
+    fn encode_tvs(tvs: &Tv, ifiv: bool) -> TvBin {
+    fn encode_moves(
+        moves_map: &HashMap<String, usize>, 
+        moves: &Vec<String>
+    ) -> Vec<u16> {
+    pub fn encoded_pokemon(maps: &Maps, pokemon: &Pokemon) -> PokemonBin {
+    pub fn encode_all_pokemon(
+        maps: &Maps, 
+        pokemons: Vec<Pokemon>
+    ) -> Vec<PokemonBin> {
+*/
+}

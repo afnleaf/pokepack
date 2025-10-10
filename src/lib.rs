@@ -32,7 +32,7 @@ impl From<ParseError> for JsValue {
 // we only need one instance of the Dex 
 static POKEDEX: OnceLock<Dex> = OnceLock::new();
 
-fn get_dex() -> &'static Dex {
+pub fn get_dex() -> &'static Dex {
     // return ref or init closure once
     POKEDEX.get_or_init(|| {
         println!("Building Pokédex for the first time...");
@@ -180,76 +180,122 @@ pub fn hex_to_pokepaste(hex: String) -> Result<String, JsValue> {
     bytes_to_pokepaste(flat_bytes)
 }
 
+
+
+// the tests here are fairly simple
+// the input == output
+// assert: check for semantic equality, not just string equality.
+// The output format might have minor whitespace differences, but the
+// parsed data structures should be identical.
 #[cfg(test)]
 mod tests {
     use super::*;
 
     const SAMPLE_PASTE: &str = r#"
-Glimmora @ Focus Sash
-Ability: Toxic Debris
-Tera Type: Grass
-EVs: 4 Def / 252 SpA / 252 Spe
-Timid Nature
-- Mortal Spin
-- Power Gem
+Miraidon @ Life Orb  
+Ability: Hadron Engine  
+Level: 50  
+Tera Type: Electric  
+EVs: 28 HP / 28 Def / 196 SpA / 4 SpD / 252 Spe  
+Modest Nature  
+- Electro Drift  
+- Volt Switch  
+- Draco Meteor  
+- Protect  
 
-Tornadus (M) @ Covert Cloak
-Ability: Prankster
-Tera Type: Ghost
-EVs: 252 SpA / 4 SpD / 252 Spe
-Timid Nature
-IVs: 0 Atk
-- Bleakwind Storm
-- Protect
+Lunala @ Electric Seed  
+Ability: Shadow Shield  
+Level: 50  
+Tera Type: Fairy  
+EVs: 220 HP / 36 Def / 236 SpA / 12 SpD  
+Modest Nature  
+IVs: 0 Atk / 29 Spe  
+- Moongeist Beam  
+- Moonblast  
+- Wide Guard  
+- Trick Room  
+
+Iron Hands @ Assault Vest  
+Ability: Quark Drive  
+Level: 50  
+Shiny: Yes  
+Tera Type: Bug  
+EVs: 212 HP / 156 Atk / 4 Def / 124 SpD / 12 Spe  
+Adamant Nature  
+- Low Kick  
+- Wild Charge  
+- Heavy Slam  
+- Fake Out  
+
+Volcarona (M) @ Leftovers  
+Ability: Flame Body  
+Level: 50  
+Shiny: Yes  
+Tera Type: Water  
+EVs: 252 HP / 252 Def / 4 SpA  
+Bold Nature  
+IVs: 0 Atk  
+- Fiery Dance  
+- Rage Powder  
+- Struggle Bug  
+- Tailwind  
+
+Urshifu-Rapid-Strike @ Focus Sash  
+Ability: Unseen Fist  
+Level: 50  
+Tera Type: Ghost  
+EVs: 4 HP / 252 Atk / 252 Spe  
+Adamant Nature  
+- Surging Strikes  
+- Close Combat  
+- Taunt  
+- Protect  
+
+Ogerpon-Cornerstone (F) @ Cornerstone Mask  
+Ability: Sturdy  
+Level: 50  
+Tera Type: Rock  
+EVs: 4 HP / 252 Atk / 252 Spe  
+Jolly Nature  
+- Ivy Cudgel  
+- Stomping Tantrum  
+- Follow Me  
+- Spiky Shield  
 "#;
+    #[test]
+    fn test_bytes_conversion_roundtrip() {
+        let paste = SAMPLE_PASTE.trim().to_string();
+        
+        let bytes_encoded = pokepaste_to_bytes(paste.clone()).unwrap();
+        let decoded_paste = bytes_to_pokepaste(bytes_encoded).unwrap();
+
+        let original_structs = parser::parse_pokepaste(paste).unwrap();
+        let decoded_structs = parser::parse_pokepaste(decoded_paste).unwrap();
+        assert_eq!(original_structs, decoded_structs);
+    }
 
     #[test]
     fn test_base64_conversion_roundtrip() {
-        // Arrange
-        let original_paste = SAMPLE_PASTE.trim().to_string();
+        let paste = SAMPLE_PASTE.trim().to_string();
 
-        // Act
-        let base64_encoded = pokepaste_to_base64(original_paste.clone()).unwrap();
+        let base64_encoded = pokepaste_to_base64(paste.clone()).unwrap();
         let decoded_paste = base64_to_pokepaste(base64_encoded).unwrap();
-
-        // Assert: Check for semantic equality, not just string equality.
-        // The output format might have minor whitespace differences, but the
-        // parsed data structures should be identical.
-        let original_structs = parser::parse_pokepaste(original_paste).unwrap();
+        
+        let original_structs = parser::parse_pokepaste(paste).unwrap();
         let decoded_structs = parser::parse_pokepaste(decoded_paste).unwrap();
-
         assert_eq!(original_structs, decoded_structs);
     }
 
     #[test]
     fn test_hex_conversion_roundtrip() {
-        // Arrange
-        let original_paste = SAMPLE_PASTE.trim().to_string();
-        
-        // Act
-        let hex_encoded = pokepaste_to_hex(original_paste.clone()).unwrap();
+        let paste = SAMPLE_PASTE.trim().to_string();
+
+        let hex_encoded = pokepaste_to_hex(paste.clone()).unwrap();
         let decoded_paste = hex_to_pokepaste(hex_encoded).unwrap();
 
-        // Assert
-        let original_structs = parser::parse_pokepaste(original_paste).unwrap();
+        let original_structs = parser::parse_pokepaste(paste).unwrap();
         let decoded_structs = parser::parse_pokepaste(decoded_paste).unwrap();
-        
-        assert_eq!(original_structs, decoded_structs);
-    }
-    
-    #[test]
-    fn test_bytes_conversion_roundtrip() {
-        // Arrange
-        let original_paste = SAMPLE_PASTE.trim().to_string();
-        
-        // Act
-        let bytes_encoded = pokepaste_to_bytes(original_paste.clone()).unwrap();
-        let decoded_paste = bytes_to_pokepaste(bytes_encoded).unwrap();
-
-        // Assert
-        let original_structs = parser::parse_pokepaste(original_paste).unwrap();
-        let decoded_structs = parser::parse_pokepaste(decoded_paste).unwrap();
-        
         assert_eq!(original_structs, decoded_structs);
     }
 }
+
