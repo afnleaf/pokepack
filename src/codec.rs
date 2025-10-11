@@ -49,6 +49,7 @@ fn binary_to_gender(gender: u8) -> String {
 
 // need to check if IV so that it defaults to 31 "perfect"
 // which is the intended behavior
+// need to add conditions for when number is greater than 255
 fn small_to_u8(s: &str, ifiv: bool) -> u8 {
     //println!("test level -{}-", level);
     if s == "" {
@@ -149,6 +150,7 @@ pub fn encode_all_pokemon(
 
 
 // gonna treat these kind of like unit tests
+// maybe I should combine each pair
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -178,9 +180,15 @@ mod tests {
         assert_eq!(binary_to_gender(1), "f");
         assert_eq!(binary_to_gender(2), "");
     }
+    
+    #[test]
+    fn test_small_to_u8() {
+        assert_eq!(small_to_u8("252", false), 252);
+        assert_eq!(small_to_u8("", false), 0);
+        assert_eq!(small_to_u8("", true), 31);
+    }
 
 /*
-    fn small_to_u8(s: &str, ifiv: bool) -> u8 {
     pub fn pokebin_to_string(tables: &Tables, pbin: &PokemonBin) -> Pokemon {
     fn decode_moves(table: &Vec<String>, moves_bin: &Vec<u16>) -> Vec<String> {
     fn decode_tvs(tvs: &TvBin, ifiv: bool) -> Tv {
